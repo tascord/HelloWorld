@@ -1,4 +1,4 @@
-export default function Sidebar(user, tablet = false) {
+export default function Sidebar({user, tablet = false}) {
 
     return (
         <div className={"sidebar pane" + (tablet ? " tablet" : "")}>

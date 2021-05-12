@@ -10,20 +10,28 @@ $font-header: 'Fugaz One', cursive;
 
     --white:   #eeeeee;
     --light:   #a8a7a7;
-    --dark:    #17171b;
+    --dark:    #1f1f2c;
     --darker:  #11111a;
     --darkest: #0f0e18;
 
-    --accent-light: #6dacff;
-    --accent:       #3978ff;
+    --accent-light: #2c6ec4;
+    --accent:       #1d418f;
 
-    --red:    hsl(0, 100%, 76%);
-    --orange: hsl(30, 100%, 76%);
-    --yellow: hsl(50, 100%, 76%);
-    --green:  hsl(90, 100%, 76%);
-    --blue:   hsl(220, 100%, 76%);
-    --purple: hsl(273, 100%, 76%);
-    --pink:   hsl(310, 100%, 76%);
+    --red-15:    hsl(0, 100%, 65%);
+    --orange-15: hsl(30, 100%, 65%);
+    --yellow-15: hsl(50, 100%, 65%);
+    --green-15:  hsl(90, 100%, 65%);
+    --blue-15:   hsl(220, 100%, 65%);
+    --purple-15: hsl(273, 100%, 65%);
+    --pink-15:   hsl(310, 100%, 65%);
+
+    --red-100:    hsl(0, 100%, 50%);
+    --orange-100: hsl(30, 100%, 50%);
+    --yellow-100: hsl(50, 100%, 50%);
+    --green-100:  hsl(90, 100%, 50%);
+    --blue-100:   hsl(220, 100%, 50%);
+    --purple-100: hsl(273, 100%, 50%);
+    --pink-100:   hsl(310, 100%, 50%);
 
 
 }
@@ -146,7 +154,7 @@ body {
                 right: 1ch;
 
                 border-radius: 100px;
-                background-color: var(--red);
+                background-color: var(--red-15);
                 animation: pulse-opacity 2s ease-in-out infinite;
             }
 
@@ -160,6 +168,63 @@ body {
 .content {
 
     width: 45%;
+    padding: 0 2.5%;
+
+    .profile {
+
+        .banner {
+            height: 150px;
+            background-image: url(https://source.unsplash.com/random);
+            background-position: center;
+            background-size: cover;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+
+        .details {
+
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            position: relative;
+
+            .avatar {
+                width: 100px;
+                height: 100px;
+                position: absolute;
+                top: -25%;
+                left: 5%;
+                border-radius: 100px;
+                border: 5px solid var(--dark);
+            }
+
+            .text {
+                margin-left: calc(5% + 100px + 2.5%);
+
+                h2 {
+                    margin: 1ch 0 0;
+                }
+
+                h3 {
+                    margin: 0 0 2ch;
+                    font-weight: lighter;
+                    color: #bbb;
+                }
+
+            }
+
+            .follow {
+                position: absolute;
+                right: 5%;
+            }
+
+            background: var(--dark);
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+
+        }
+
+    }
 
 }
 
@@ -168,7 +233,7 @@ body {
 
     .header {
 
-        width: 100%;;
+        width: 100%;
 
         display: flex;
         justify-content: flex-end;
@@ -196,6 +261,10 @@ body {
     background: var(--dark);
     padding: 2.5% 5%;
     border-radius: 10px;
+
+    h1, h2, h3, button {
+        margin: 1ch 0;
+    }
 
     &.profile-mini {
 
@@ -295,11 +364,12 @@ button, .button {
     font-size: 100%;
     border-radius: 10px;
     cursor: pointer;
+    text-align: center;
 
     transition: color 0.15s ease-in-out, border 0.15s ease-in-out;
     &:hover {
-        color: var(--red);
-        border-color: var(--red);
+        color: var(--accent-light);
+        border-color: var(--accent-light);
     }
 
 }

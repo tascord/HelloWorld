@@ -1,4 +1,4 @@
-export default function Actions(user) {
+export default function Actions({user}) {
 
     return (
         <div className="pane actions">
@@ -15,7 +15,7 @@ export default function Actions(user) {
                 </div>
                 <div className="stats">
                     <span><b>{user.followers.length}</b> Followers</span>
-                    <span>Following <b>{user.following.length}</b> </span>
+                    <span><b>{user.following.length}</b> Following</span>
                 </div>
             </div>
             <div className="panel">
