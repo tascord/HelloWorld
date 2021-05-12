@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './style/main.css'
 
-import Dashboard from './Dashboard';
+import { Dashboard } from './Dashboard';
 import Preferences from './Preferences';
 
 ReactDOM.render(

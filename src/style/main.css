@@ -2,13 +2,20 @@
 @import url("https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Fugaz+One&display=swap");
 :root {
-  --white: #eeeeee;
-  --light: #a8a7a7;
-  --dark: #474747;
-  --darker: #363636;
-  --darkest: #242c37;
-  --accent-light: #cc527a;
-  --accent: #e8157d;
+  --white:   #eeeeee;
+  --light:   #a8a7a7;
+  --dark:    #17171b;
+  --darker:  #11111a;
+  --darkest: #0f0e18;
+  --accent-light: #6dacff;
+  --accent:       #3978ff;
+  --red:    hsl(0, 100%, 76%);
+  --orange: hsl(30, 100%, 76%);
+  --yellow: hsl(50, 100%, 76%);
+  --green:  hsl(90, 100%, 76%);
+  --blue:   hsl(220, 100%, 76%);
+  --purple: hsl(273, 100%, 76%);
+  --pink:   hsl(310, 100%, 76%);
 }
 
 * {
@@ -23,7 +30,7 @@ body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
   color: var(--white);
-  background: var(--darker);
+  background: var(--darkest);
 }
 
 .App {
@@ -79,8 +86,70 @@ body {
   font-size: 4ch;
 }
 
+.sidebar .following .user {
+  position: relative;
+  margin-bottom: 2.5%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.sidebar .following .user img {
+  width: 15%;
+  height: 15%;
+  border-radius: 100px;
+}
+
+.sidebar .following .user .text {
+  height: 20%;
+  margin-left: 5%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.sidebar .following .user .text h2 {
+  margin: 0;
+  font-size: 2ch;
+}
+
+.sidebar .following .user .text h3 {
+  margin: 0;
+  font-size: 1.5ch;
+  color: #bbb;
+  font-weight: 400;
+}
+
+.sidebar .following .user .live-indicator {
+  width: 1ch;
+  height: 1ch;
+  position: absolute;
+  top: 1ch;
+  right: 1ch;
+  border-radius: 100px;
+  background-color: var(--red);
+  -webkit-animation: pulse-opacity 2s ease-in-out infinite;
+          animation: pulse-opacity 2s ease-in-out infinite;
+}
+
 .content {
-  width: 33.3%;
+  width: 45%;
 }
 
 .actions .header {
@@ -100,6 +169,10 @@ body {
   width: 50px;
   height: 50px;
   border-radius: 100px;
+}
+
+.actions .panel {
+  margin-bottom: 15%;
 }
 
 .panel {
@@ -191,11 +264,13 @@ body {
 }
 
 .panel.profile-mini .stats span {
-  margin: 0.25ch 1ch;
+  margin: 0.25ch 1ch 0;
   padding: 0.5ch 1ch;
   border-radius: 7.5px;
   color: #bbb;
   cursor: pointer;
+  -webkit-transition: background 0.15s ease-in-out;
+  transition: background 0.15s ease-in-out;
 }
 
 .panel.profile-mini .stats span b {
@@ -209,5 +284,49 @@ body {
 a {
   text-decoration: none;
   color: var(--accent-light);
+}
+
+button, .button {
+  padding: 0.75ch 2ch;
+  background-color: var(--darker);
+  color: var(--white);
+  font-family: Arial, Helvetica, sans-serif;
+  border: 1px var(--white) solid;
+  outline: none;
+  font-weight: 500;
+  font-size: 100%;
+  border-radius: 10px;
+  cursor: pointer;
+  -webkit-transition: color 0.15s ease-in-out, border 0.15s ease-in-out;
+  transition: color 0.15s ease-in-out, border 0.15s ease-in-out;
+}
+
+button:hover, .button:hover {
+  color: var(--red);
+  border-color: var(--red);
+}
+
+@-webkit-keyframes pulse-opacity {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse-opacity {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 /*# sourceMappingURL=main.css.map */
