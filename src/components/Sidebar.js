@@ -53,7 +53,7 @@ export default class Sidebar extends Component {
                         this.state.following.map(u => {
 
                             return (
-                                <div className="panel user" key={u.id}>
+                                <div className="panel user" key={u.id} onClick={() => window.location.pathname = `/profile/${u.id}`}>
                                     {u.live ? <div className="live-indicator" title="User is live"></div> : ''}
                                     <img alt={"Avatar of " + u.username} src={u.avatar}></img>
                                     <div className="text">

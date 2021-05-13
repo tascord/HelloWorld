@@ -58,6 +58,8 @@ export default class Profile extends Component {
 
     render() {
 
+        if(!this.user) return (<></>);
+
         return (
 
             <div className="pane content">
@@ -73,7 +75,7 @@ export default class Profile extends Component {
                             <h2>{this.state.other !== false ? this.state.other.username : ''}</h2>
                             <h3>{this.state.other !== false ? ('@' + this.state.other.id) : 'No user found'}</h3>
                         </div>
-                        {this.state.other !== false ? <button className="follow" onClick={this.state.following ? () => this.follow(true) : () => this.follow()}>{this.state.following ? 'Unfollow' : 'Follow'}</button> : ''}
+                        {this.state.other !== false ? this.state.other.id === this.user.id ? <button className="follow">Edit Profile</button> : <button className="follow" onClick={this.state.following ? () => this.follow(true) : () => this.follow()}>{this.state.following ? 'Unfollow' : 'Follow'}</button> : ''}
                     </div>
 
                 </div>
