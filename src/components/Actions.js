@@ -6,7 +6,7 @@ export default function Actions({user}) {
                 <img alt="Avatar" src={user.avatar}></img>
             </div>
             <div className="panel profile-mini">
-                <div className="name">
+                <div className="name" onClick={() => window.location.pathname = `/profile/${user.id}`}>
                     <img alt="Avatar" src={user.avatar}></img>
                     <div className="text">
                         <h2>{user.username}</h2>
@@ -20,7 +20,7 @@ export default function Actions({user}) {
             </div>
             <div className="panel">
                 <h2>Ready to stream?</h2>
-                <button>Go live</button>
+                <button className="red">Go live</button>
             </div>
         </div>
     )

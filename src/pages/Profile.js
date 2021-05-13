@@ -2,9 +2,9 @@ import { useMediaQuery } from 'react-responsive';
 
 import Sidebar from '../components/Sidebar';
 import Actions from '../components/Actions';
-import Feed from '../components/Feed';
+import ProfileFeed from '../components/Profile';
 
-export default function Dashboard({ user }) {
+export default function Profile({ user }) {
 
   const desktop = useMediaQuery({ minWidth: 1440 });
   const tablet = useMediaQuery({ minWidth: 1265 });
@@ -13,7 +13,7 @@ export default function Dashboard({ user }) {
   return (
     <div className="App">
       {tablet ? <Sidebar user={user} tablet={tablet} /> : ''}
-      <Feed user={user} />
+      <ProfileFeed user={user} />
       {desktop ? <Actions user={user} /> : ''}
     </div>
   );

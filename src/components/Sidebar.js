@@ -1,30 +1,74 @@
-export default function Sidebar({user, tablet = false}) {
+import { Component } from "react";
+import Request from '../helpers/Request';
 
-    return (
-        <div className={"sidebar pane" + (tablet ? " tablet" : "")}>
-            <div className="header">
-                <h2><a href="/dashboard">Hello World</a></h2>
-            </div>
-            <div className="following">
-                <h2>Following</h2>
-                {
-                    user.following.map(u => {
+export default class Sidebar extends Component {
 
-                        return (
-                            <div className="panel user">
-                                {u.live ? <div className="live-indicator" title="User is live"></div> : ''}
-                                <img alt={"Avatar of " + u.username} src={u.avatar}></img>
-                                <div className="text">
-                                    <h2>{u.username}</h2>
-                                    <h3>@{u.id}</h3>
+    constructor() {
+
+        super();
+
+        this.state = {
+            following: []
+        }
+
+    }
+
+    componentDidMount() {
+
+        let count = 0;
+        let following = [];
+
+        this.props.user.following.forEach(i => {
+
+            Request('http://localhost:3001/user', {
+                id: i
+            })
+
+            .then(data => {
+                count++;
+                following.push(data);
+                if(count === this.props.user.following.length) this.setState({ following });
+
+            })
+            
+            .catch((e) => {
+                console.warn(e);
+                count++;
+            });
+
+        })
+
+    }
+
+    render() {
+
+        return (
+            <div className={"sidebar pane" + (this.props.tablet ? " tablet" : "")}>
+                <div className="header">
+                    <h2><a href="/dashboard">BRC</a></h2>
+                </div>
+                <div className="following">
+                    <h2>Following</h2>
+                    {
+                        this.state.following.map(u => {
+
+                            return (
+                                <div className="panel user" key={u.id}>
+                                    {u.live ? <div className="live-indicator" title="User is live"></div> : ''}
+                                    <img alt={"Avatar of " + u.username} src={u.avatar}></img>
+                                    <div className="text">
+                                        <h2>{u.username}</h2>
+                                        <h3>@{u.id}</h3>
+                                    </div>
                                 </div>
-                            </div>
-                        )
+                            )
 
-                    })
-                }
+                        })
+                    }
+                </div>
             </div>
-        </div>
-    );
+        );
+
+    }
 
 }

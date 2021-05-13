@@ -24,6 +24,8 @@ module.exports = function DiscordLogin(i, o) {
 
             fetch('https://discordapp.com/api/users/@me', { method: 'GET', headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'authorization': `${data.token_type} ${data.access_token}` }, }).then(res => res.json()).then(user => {
 
+                console.log(user);
+
                 let saved_user = GetUserByAuth('d:' + user.id);
                 if(!saved_user) saved_user = new User({ auth: 'd:' + user.id, id: GenerateID(), username: user.username });
                 else saved_user = new User(saved_user);

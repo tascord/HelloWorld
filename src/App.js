@@ -1,7 +1,8 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import React, { Component } from 'react';
 
-import { Dashboard } from './pages/Dashboard';
+import Dashboard from './pages/Dashboard';
+import Profile from './pages/Profile';
 import Preferences from './pages/Preferences';
 import Login from './pages/Login';
 import Request from './helpers/Request';
@@ -45,7 +46,6 @@ export default class App extends Component {
 
         .then(data => {
             this.setState({user: {token: getToken(), ...data}});
-            console.log('Set State', data);
         })
         .catch((e) => {
             console.warn(e);
@@ -60,7 +60,6 @@ export default class App extends Component {
             return <h1>Loading...</h1>
         }
 
-        console.log(`Saved token: ${getToken()}`);
         if (!getToken() && login_urls.indexOf(window.location.pathname) === -1) return <Login setToken={setToken}></Login>
 
         return (
@@ -68,9 +67,13 @@ export default class App extends Component {
                 <BrowserRouter>
                     <Switch>
 
-                        {/* Main App */}
+                        {/* Feed */}
                         <Route path="/dashboard">
                             <Dashboard user={this.state.user} />
+                        </Route>
+
+                        <Route path="/profile">
+                            <Profile user={this.state.user} />
                         </Route>
 
                         {/* Settings */}

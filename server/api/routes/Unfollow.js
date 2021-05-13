@@ -12,12 +12,12 @@ module.exports = function GetSelf(i, o) {
     let target = GetUserById(other);
     if(!target) return o.status(400).end('Invalid other');
 
-    if(user.id === target.id) return o.status(404).end('You cannot follow yourself');
+    if(user.id === target.id) return o.status(404).end('You cannot unfollow yourself');
 
-    if(user.following.indexOf(other) > -1) return o.status(400).end('Already following');
+    if(user.following.indexOf(other) == -1) return o.status(400).end('Not following');
     
     user = new User(user);
-    user.following.push((new User(target)));
+    user.following = user.following.filter(f => f.id !== other);
 
     user.save();
     return o.json(user.scrub());

@@ -114,6 +114,13 @@ body {
             display: flex;
             justify-content: flex-start;
             align-items: center;
+            cursor: pointer;
+            background: var(--darkest);
+            
+            transition: 0.15s ease-in-out;
+            &:hover {
+                background: var(--dark);
+            }
 
             img {
                 width: 15%;
@@ -279,6 +286,7 @@ body {
             justify-content: flex-start;
             align-items: center;
             flex-direction: row;
+            cursor: pointer;
 
             img {
                 width: 20%;
@@ -366,11 +374,17 @@ button, .button {
     cursor: pointer;
     text-align: center;
 
+    &.red:hover {
+        color: var(--red-15);
+        border-color: var(--red-15);
+    }
+
     transition: color 0.15s ease-in-out, border 0.15s ease-in-out;
     &:hover {
         color: var(--accent-light);
         border-color: var(--accent-light);
     }
+    
 
 }
 
