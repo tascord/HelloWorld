@@ -8,6 +8,8 @@ module.exports = function GetSelf(i, o) {
     let user = GetUserByToken(token);
     if(!user) return o.status(400).end('Invalid token');
 
-    return o.json(new User(user).scrub());
+    let data = new User(user).scrub();
+    console.log(data);
+    return o.json(data);
 
 }

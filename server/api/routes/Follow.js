@@ -12,7 +12,7 @@ module.exports = function GetSelf(i, o) {
     let target = GetUserById(other);
     if(!target) return o.status(400).end('Invalid other');
 
-    if(user.following.indexOf(target)) return o.status(400).end('Already following');
+    if(user.following.indexOf(other) > -1) return o.status(400).end('Already following');
     
     user = new User(user);
     user.following.push((new User(target)));

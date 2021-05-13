@@ -19,13 +19,23 @@ const User = class User {
 
         this.followers = 'followers' in opts ? opts['followers'].map(u => {
             if (u.id === from.id) return from;
-            else return new User(u, this);
-        }) : [];
+
+            if(!u.id) return null;
+            let data = GetUserById(u.id);
+            if(data === undefined) return null;
+            return new User(data, this);
+
+        }).filter(u => u !== null) : [];
 
         this.following = 'following' in opts ? opts['following'].map(u => {
             if (u.id === from.id) return from;
-            else return new User(u, this);
-        }) : [];
+            
+            if(!u.id) return null;
+            let data = GetUserById(u.id);
+            if(data === undefined) return null;
+            return new User(data, this);
+
+        }).filter(u => u !== null) : [];
 
         if (!this.username) throw new Error('No username provided.');
         if (!this.id) throw new Error('No id provided.')

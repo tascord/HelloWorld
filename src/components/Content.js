@@ -6,12 +6,17 @@ export default class Content extends Component {
     constructor() {
         super();
 
-        this.state = {};
-        this.state.other = {};
-        this.state.following = false;
+        this.state = {
+            user: {},
+            other: {},
+            following: false
+        };
+
     }
 
-    componentDidMount() {
+    componentDidMount(props) {
+
+        console.log('User Props', this.props.user);
 
         Request('http://localhost:3001/user', {
             id: 'System'
@@ -19,6 +24,7 @@ export default class Content extends Component {
 
         .then(data => {
             this.setState({other: data, following: this.props.user.following.indexOf(this.state.other.id) !== -1});
+            console.log('Other', this.state.other)
         })
         .catch((e) => {
             console.warn(e);
@@ -29,7 +35,7 @@ export default class Content extends Component {
     follow = (unfollow = false) => {
 
         if(!this.state.other['id']) return;
-        Request('http://localhost:3001/follow', {
+        Request(`http://localhost:3001/${unfollow ? 'unfollow' : 'follow'}`, {
             token: this.props.user['token'],
             other: this.state.other['id']
         })

@@ -9,7 +9,7 @@ export function Dashboard({ user }) {
   const desktop = useMediaQuery({ minWidth: 1440 });
   const tablet = useMediaQuery({ minWidth: 1265 });
   // const phone = useMediaQuery({ minWidth: 800 });
-
+  
   return (
     <div className="App">
       {tablet ? <Sidebar user={user} tablet={tablet} /> : ''}

@@ -33,35 +33,32 @@ export default class App extends Component {
         super();
 
         this.state = {};
-        this.state.user = {
-            username: "...",
-            id: "...",
-            followers: [],
-            following: [],
-            live: false,
-            avatar: '/discord.png'
-          };
+        this.state.user = {};
     }
 
     componentDidMount() {
 
+        if(!getToken()) return;
         Request('http://localhost:3001/self', {
             token: getToken()
         })
 
         .then(data => {
-            console.log(data);
             this.setState({user: {token: getToken(), ...data}});
+            console.log('Set State', data);
         })
         .catch((e) => {
             console.warn(e);
             delToken();
-            window.location.reload();
         });
 
     }
 
     render() {
+
+        if(!this.state.user['id'] && getToken()) {
+            return <h1>Loading...</h1>
+        }
 
         console.log(`Saved token: ${getToken()}`);
         if (!getToken() && login_urls.indexOf(window.location.pathname) === -1) return <Login setToken={setToken}></Login>
