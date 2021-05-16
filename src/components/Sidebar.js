@@ -45,7 +45,7 @@ export default class Sidebar extends Component {
         return (
             <div className={"sidebar pane" + (this.props.tablet ? " tablet" : "")}>
                 <div className="header">
-                    <h2><a href="/dashboard">BRC</a></h2>
+                    <h2><a href="/dashboard">BR.C</a></h2>
                 </div>
                 <div className="following">
                     <h2>Following</h2>
@@ -53,12 +53,12 @@ export default class Sidebar extends Component {
                         this.state.following.map(u => {
 
                             return (
-                                <div className="panel user" key={u.id} onClick={() => window.location.pathname = `/profile/${u.id}`}>
+                                <div className="panel user" key={u.id} onClick={() => window.location.pathname = `/profile/${u.handle}`}>
                                     {u.live ? <div className="live-indicator" title="User is live"></div> : ''}
                                     <img alt={"Avatar of " + u.username} src={u.avatar}></img>
                                     <div className="text">
                                         <h2>{u.username}</h2>
-                                        <h3>@{u.id}</h3>
+                                        <h3>@{u.handle}</h3>
                                     </div>
                                 </div>
                             )

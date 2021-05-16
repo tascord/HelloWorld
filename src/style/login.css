@@ -47,7 +47,7 @@
       -ms-flex-align: center;
           align-items: center;
   text-align: center;
-  font-size: larger;
+  font-size: 100%;
 }
 
 .login .inner .button img {

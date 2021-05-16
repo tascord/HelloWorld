@@ -17,9 +17,14 @@ module.exports = function GetSelf(i, o) {
     if(user.following.indexOf(other) == -1) return o.status(400).end('Not following');
     
     user = new User(user);
-    user.following = user.following.filter(f => f.id !== other);
+    target = new User(target);
+
+    user.following = user.following.filter(f => f.id !== target.id);
+    target.followers = target.followers.filter(f => f.id !== user.id);
 
     user.save();
+    target.save();
+
     return o.json(user.scrub());
 
 }

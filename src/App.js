@@ -39,28 +39,30 @@ export default class App extends Component {
 
     componentDidMount() {
 
-        if(!getToken()) return;
+        if (!getToken()) return;
         Request('http://localhost:3001/self', {
             token: getToken()
         })
 
-        .then(data => {
-            this.setState({user: {token: getToken(), ...data}});
-        })
-        .catch((e) => {
-            console.warn(e);
-            delToken();
-        });
+            .then(data => {
+                this.setState({ user: { token: getToken(), ...data } });
+            })
+            .catch((e) => {
+                console.warn(e);
+                delToken();
+                window.location.search = '';
+            });
 
     }
 
     render() {
 
-        if(!this.state.user['id'] && getToken()) {
-            return <h1>Loading...</h1>
+        if (!this.state.user['id'] && getToken() !== undefined) {
+            return <></>;
         }
 
         if (!getToken() && login_urls.indexOf(window.location.pathname) === -1) return <Login setToken={setToken}></Login>
+        if (window.location.search && login_urls.indexOf(window.location.pathname)) window.location = window.location.origin + window.location.pathname;
 
         return (
             <div className="wrapper">

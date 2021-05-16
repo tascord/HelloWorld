@@ -11,7 +11,7 @@ export default function Dashboard({ user }) {
   // const phone = useMediaQuery({ minWidth: 800 });
   
   return (
-    <div className="App">
+    <div className={"App" + (!tablet ? ' mobile' : '')}>
       {tablet ? <Sidebar user={user} tablet={tablet} /> : ''}
       <Feed user={user} />
       {desktop ? <Actions user={user} /> : ''}

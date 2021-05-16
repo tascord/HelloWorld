@@ -16,12 +16,15 @@ export default function Login({ setToken, discord }) {
         
         console.log(`Logged in. Token: ${token}`);
         setToken(token);
+
         window.location.pathname = 'dashboard';
 
       })
       .catch(console.warn);
 
-    return (<><a href="/dashboard">Go back</a></>);
+    return (<></>);
+  } else if(window.location.search) {
+    window.location.search = '';
   }
 
   return (

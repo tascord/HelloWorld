@@ -6,6 +6,7 @@ app.use(require('body-parser').json());
 app.listen(3001, () => console.log('Started Server'));
 
 const cors = require('cors');
+const { User, GetUserById, GenerateToken } = require('./server/api/User');
 app.use(cors());
 
 const routes = {};
@@ -27,3 +28,17 @@ app.post('*', (req, res) => {
     else res.status(404).end();
 
 })
+
+// System account
+if(!GetUserById('system')) {
+
+    new User({
+        username: 'System',
+        id: 'system',
+        handle: 'System',
+        avatar: "/system.png",
+        auth: 'd:2398201980593809809248309',
+        token: GenerateToken() 
+    }).save();
+
+}
