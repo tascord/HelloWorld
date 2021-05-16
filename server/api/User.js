@@ -10,6 +10,7 @@ const User = class User {
         this.handle = 'handle' in opts ? opts['handle'] : null;
         this.live = 'live' in opts ? opts['live'] : false;
         this.auth = 'auth' in opts ? opts['auth'] : null;
+        this.flags = 'flags' in opts ? opts['flags'] : [];
         this.token = 'token' in opts ? opts['token'] : {
             generated: Date.now(),
             value: GenerateToken()
@@ -108,7 +109,7 @@ const GetUserById = function (id) {
 const GetUserByHandle = function (handle) {
     return Users.all()
         .map(r => Users.get(r.ID))
-        .find(u => u.handle === handle);
+        .find(u => u.handle.toLowerCase() === handle.toLowerCase());
 }
 
 const GenerateID = function () {

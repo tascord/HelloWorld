@@ -15,7 +15,7 @@ module.exports = function GetSelf(i, o) {
     else {
         user = GetUserByHandle(handle);
         if(!user) return o.status(400).end('Invalid handle');
-    }
+    } 
 
     return o.json(new User(user).scrub());
 

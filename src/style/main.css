@@ -54,7 +54,6 @@ body {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
-  margin: 0 5%;
 }
 
 .App.mobile .content {
@@ -552,6 +551,79 @@ button:hover, .button:hover {
   font-size: 1.5ch;
   color: #bbb;
   font-weight: 400;
+}
+
+.edit {
+  z-index: 10;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  -webkit-box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.2);
+          box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.2);
+  background-color: rgba(36, 29, 54, 0.15);
+  -webkit-backdrop-filter: blur(5px);
+          backdrop-filter: blur(5px);
+  display: -ms-grid;
+  display: grid;
+  place-items: center;
+}
+
+.edit:not(.open) {
+  display: none;
+}
+
+.edit form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+  -ms-flex-line-pack: start;
+      align-content: flex-start;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  border-radius: 15px;
+  padding: 2%;
+  min-width: 30%;
+  min-height: 20%;
+  background: var(--darker);
+  border: 2px solid var(--white);
+}
+
+.edit form h3 {
+  color: var(--accent-light);
+  margin: 0;
+}
+
+.edit form label {
+  width: 100%;
+}
+
+.edit form label input[type="text"] {
+  width: 100%;
+  min-height: 50px;
+  font-size: 100%;
+  outline: none;
+  border: none;
+  background: none;
+  color: var(--white);
+  -webkit-transition: color 0.15s ease-in-out;
+  transition: color 0.15s ease-in-out;
+}
+
+.edit form label input[type="text"].invalid {
+  color: var(--red-15);
+}
+
+.edit form label .error {
+  margin-bottom: 1ch;
+  font-size: 100%;
+  color: var(--red-15);
 }
 
 @-webkit-keyframes pulse-opacity {
