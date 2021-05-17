@@ -113,6 +113,20 @@ export default class Profile extends Component {
         this.setState({ edits })
     }
 
+    exitEdits = (event) => {
+
+        if(!(event.srcElement || event.target).classList.contains('edit')) return;
+
+        this.setState({
+            edits: {
+                username: this.state.other.username,
+                handle: this.state.other.handle,
+                avatar: this.state.other.avatar,
+            },
+            editOpen: false
+        })
+    }
+
     render() {
 
         if (!this.user) return (<></>);
@@ -125,7 +139,7 @@ export default class Profile extends Component {
                     <SearchWindow user={this.props.user} />
                 </div>
 
-                <div className={"edit" + (this.state.editOpen ? " open" : "")}>
+                <div className={"edit" + (this.state.editOpen ? " open" : "")} onClick={this.exitEdits}>
                     <form>
                         <label>
                             <h3 className="error" id="error" aria-hidden="true"></h3>

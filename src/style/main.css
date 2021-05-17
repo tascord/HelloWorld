@@ -563,21 +563,26 @@ button:hover, .button:hover {
   -webkit-box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.2);
           box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.2);
   background-color: rgba(36, 29, 54, 0.15);
-  -webkit-backdrop-filter: blur(5px);
-          backdrop-filter: blur(5px);
+  place-items: center;
+  display: none;
+  cursor: pointer;
+}
+
+.edit.open {
   display: -ms-grid;
   display: grid;
-  place-items: center;
+  -webkit-animation: blur 0.15s ease-in-out forwards;
+          animation: blur 0.15s ease-in-out forwards;
 }
 
-.edit:not(.open) {
-  display: none;
-}
-
-.edit form {
+.edit.open form {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+}
+
+.edit form {
+  display: none;
   -webkit-box-pack: space-evenly;
       -ms-flex-pack: space-evenly;
           justify-content: space-evenly;
@@ -647,6 +652,50 @@ button:hover, .button:hover {
   }
   100% {
     opacity: 1;
+  }
+}
+
+@-webkit-keyframes blur {
+  0% {
+    -webkit-backdrop-filter: blur(0px);
+            backdrop-filter: blur(0px);
+  }
+  100% {
+    -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
+  }
+}
+
+@keyframes blur {
+  0% {
+    -webkit-backdrop-filter: blur(0px);
+            backdrop-filter: blur(0px);
+  }
+  100% {
+    -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
+  }
+}
+
+@-webkit-keyframes scale-in {
+  0% {
+    -webkit-transform: scale(0);
+            transform: scale(0);
+  }
+  100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+
+@keyframes scale-in {
+  0% {
+    -webkit-transform: scale(0);
+            transform: scale(0);
+  }
+  100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
   }
 }
 /*# sourceMappingURL=main.css.map */

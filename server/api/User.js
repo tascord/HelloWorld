@@ -3,6 +3,11 @@ const Users = Table('Users');
 
 const User = class User {
 
+    /**
+     * User constructor
+     * @param {Object} opts Options for user 
+     * @param {?User} from User that instantiated construction
+     */
     constructor(opts = {}, from = { id: null }) {
 
         this.username = 'username' in opts ? opts['username'] : null;
@@ -44,6 +49,10 @@ const User = class User {
 
     }
 
+    /**
+     * Flattens User to object
+     * @returns {Object} Flattened object
+     */
     serialize = () => {
         return {
 
@@ -61,6 +70,10 @@ const User = class User {
         }
     }
 
+    /**
+     * Removes sensitive data
+     * @returns {Object} Flattened, 'scrubbed' user
+     */
     scrub = () => {
 
         let data = this.serialize();
@@ -72,8 +85,14 @@ const User = class User {
 
     }
 
+    /**
+     * Updates / Creates user in database
+     */
     save = () => Users.set(this.id, this.serialize());
 
+    /**
+     * Generates session token
+     */
     generateToken = () => {
         this.token = {
             generated: Date.now(),
@@ -81,11 +100,35 @@ const User = class User {
         };
     }
 
+    /**
+     * Checks token equality and ensures sessions aren't kept for longer than 10m without use
+     * @param {String} token Token to check 
+     * @returns {Boolean} Token validity
+     */
     validateToken = (token) => this.token.value === token && Date.now() - this.token.generated < 600000;
+
+    /**
+     * Extends the currently active token
+     */
     extendToken = () => this.token.generated = Date.now();
+
+    /**
+     * User flags
+     */
+    static FLAGS = {
+        SYSTEM: 'SYSTEM',
+        BOT: 'BOT',
+        VERIFIED: 'VERIFIED',
+        STAFF: 'STAFF'
+    }
 
 }
 
+/**
+ * Fetches a users data by auth token
+ * @param {String} auth Auth token 
+ * @returns {Object|undefined} User data or undefined
+ */
 const GetUserByAuth = function (auth) {
 
     return Users.all()
@@ -94,6 +137,11 @@ const GetUserByAuth = function (auth) {
 
 }
 
+/**
+ * Fetches a users data by session token
+ * @param {String} token Session token 
+ * @returns {Object|undefined} User data or undefined
+ */
 const GetUserByToken = function (token) {
 
     return Users.all()
@@ -102,16 +150,30 @@ const GetUserByToken = function (token) {
 
 }
 
+/**
+ * Fetches a users data by ID
+ * @param {String} id User ID 
+ * @returns {Object|undefined} User data or undefined
+ */
 const GetUserById = function (id) {
     return Users.has(id) ? Users.get(id) : undefined;
 }
 
+/**
+ * Fetches a users data by handle
+ * @param {String} handle User handle 
+ * @returns {Object|undefined} User data or undefined
+ */
 const GetUserByHandle = function (handle) {
     return Users.all()
         .map(r => Users.get(r.ID))
         .find(u => u.handle.toLowerCase() === handle.toLowerCase());
 }
 
+/**
+ * Generates an unused valid User ID
+ * @returns {String} Valid ID
+ */
 const GenerateID = function () {
 
     let id;
@@ -130,6 +192,10 @@ const GenerateID = function () {
     return id;
 }
 
+/**
+ * Generates a random, unused handle
+ * @returns {String} Handle
+ */
 const GenerateHandle = function () {
 
     let handle;
@@ -148,6 +214,10 @@ const GenerateHandle = function () {
     return handle;
 }
 
+/**
+ * Generates an unused valid session token (value)
+ * @returns {String} Valid Token
+ */
 const GenerateToken = function () {
 
     let token;
@@ -167,6 +237,9 @@ const GenerateToken = function () {
 
 }
 
+/**
+ * Module exports
+ */
 module.exports = {
     User,
     GetUserByAuth,

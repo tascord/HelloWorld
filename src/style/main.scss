@@ -529,17 +529,23 @@ button, .button {
     left: 0;
     box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2); 
     background-color: rgba(36, 29, 54, 0.15);
-    backdrop-filter: blur(5px);
-    display: grid;
     place-items: center;
+    display: none;
+    cursor: pointer;
 
-    &:not(.open) {
-        display: none;
+    &.open {
+        display: grid;
+        animation: blur 0.15s ease-in-out forwards;
+
+        form {
+            display: flex;
+        }
+
     }
 
     form {
 
-        display: flex;
+        display: none;
         justify-content: space-evenly;
         align-content: flex-start;
         flex-direction: column;
@@ -594,4 +600,14 @@ button, .button {
     0%    { opacity: 1; }
     50%   { opacity: 0; }
     100%  { opacity: 1; }
+}
+
+@keyframes blur {
+    0%   { backdrop-filter: blur(0px); }
+    100% { backdrop-filter: blur(5px); }
+} 
+
+@keyframes scale-in {
+    0%   { transform: scale(0); }
+    100% { transform: scale(1); }
 }

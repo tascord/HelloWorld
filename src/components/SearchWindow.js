@@ -48,7 +48,7 @@ export default class SearchWindow extends Component {
             <>
                 <div className="search-box">
                     <i className="fas fa-search"></i>
-                    <input type="text" placeholder="Search for anything" onInput={this.search} onPaste={this.search} onChange={this.search} onBlur={this.clearSearch}></input>
+                    <input type="text" placeholder="Search for anything" onInput={this.search} onPaste={this.search} onChange={this.search}></input>
                 </div>
                 <div className={"search-window" + (this.state.query ? ' searching' : '')}>
                     {this.state.data.map(u => {
