@@ -250,12 +250,16 @@ body {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  position: relative;
 }
 
 .actions .header img {
   width: 50px;
   height: 50px;
   border-radius: 100px;
+  cursor: pointer;
+  z-index: 10;
+  border: 2px solid var(--white);
 }
 
 .actions .panel {
@@ -657,7 +661,6 @@ button:hover,
   width: 100px;
   height: 100px;
   border-radius: 100ch;
-  cursor: pointer;
 }
 
 .imageUpload input {
@@ -665,6 +668,91 @@ button:hover,
   position: absolute;
   width: 100px;
   height: 100px;
+}
+
+.imageUpload .whiteOut {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border-radius: 100ch;
+  background: var(--white);
+  cursor: pointer;
+  opacity: 0;
+  -webkit-transition: 0.15s ease-in-out;
+  transition: 0.15s ease-in-out;
+}
+
+.imageUpload .whiteOut:hover {
+  opacity: 0.25;
+}
+
+.profileMenu {
+  border: 2px solid var(--white);
+  display: none;
+  width: 20ch;
+  position: absolute;
+  top: 48%;
+  left: calc(100% - 18ch);
+  background-color: var(--darker);
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  border-radius: 15px;
+  padding: 2ch 1ch;
+}
+
+.profileMenu.open {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.profileMenu a {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  border-radius: 5px;
+  padding: 2.5% 5%;
+  width: 100%;
+  height: 3ch;
+  font-size: 110%;
+  margin-bottom: 1ch;
+  color: var(--white);
+  font-weight: lighter;
+  -webkit-transition: color 0.15s ease-in-out, background 0.15s ease-in-out;
+  transition: color 0.15s ease-in-out, background 0.15s ease-in-out;
+}
+
+.profileMenu a i {
+  width: 1ch;
+  margin-right: 0.75ch;
+}
+
+.profileMenu a:hover {
+  background-color: var(--dark);
+  color: var(--light);
+}
+
+.profileMenu button:hover {
+  color: var(--red-15);
+  border-color: var(--red-15);
 }
 
 @-webkit-keyframes pulse-opacity {

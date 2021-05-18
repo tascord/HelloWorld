@@ -125,6 +125,7 @@ export default class Profile extends Component {
                     <form action="http://localhost:3001/edit" method="POST" encType="multipart/form-data">
                         <label>
                             <div className="imageUpload">
+                                <div className="whiteOut"></div>
                                 <input name="avatar" id="avatar" type="file" onChange={this.imageUpload}></input>
                                 <img alt="Avatar" id="imagePreview" src={this.props.user.avatar}></img>
                             </div>
@@ -143,7 +144,7 @@ export default class Profile extends Component {
                         <label>
                             <button><i className="fas fa-save"></i> Save</button>
                         </label>
-                        <input type="text" hidden="true" name="token" value={this.props.user.token}></input>
+                        <input type="text" hidden name="token" readOnly value={this.props.user.token}></input>
                     </form>
                 </div>
 

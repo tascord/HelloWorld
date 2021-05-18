@@ -8,7 +8,7 @@
 
 .login .inner {
   padding: 3ch 5ch;
-  width: 21%;
+  width: 50ch;
   height: 45%;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -38,7 +38,7 @@
 }
 
 .login .inner .button {
-  width: 100%;
+  min-width: 100%;
   height: 60px;
   display: -webkit-box;
   display: -ms-flexbox;

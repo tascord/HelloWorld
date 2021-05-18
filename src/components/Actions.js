@@ -1,9 +1,11 @@
+import AvatarMenu from "./AvatarMenu";
+
 export default function Actions({ user }) {
 
     return (
         <div className="pane actions">
             <div className="header">
-                <img alt="Avatar" src={user.avatar}></img>
+                <AvatarMenu user={user} />
             </div>
             <div className="panel profile-mini">
                 <div className="name" onClick={() => window.location.pathname = `/profile/${user.handle}`}>

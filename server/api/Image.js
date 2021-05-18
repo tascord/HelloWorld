@@ -49,7 +49,6 @@ class Image {
     static upload = (name, path) => new Promise((resolve, reject) => {
 
         let data = {};
-        console.log(path);
 
         // High Quality
         gm(path)
@@ -81,7 +80,7 @@ class Image {
                         unlinkSync(path);
                         image.save();
 
-                        return image;
+                        resolve(image);
 
                     })
 
@@ -89,6 +88,12 @@ class Image {
 
 
     })
+
+    static file_types = [
+        "image/png",
+        "image/jpeg",
+        "image/gif"
+    ]
 
 }
 
