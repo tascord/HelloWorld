@@ -21,10 +21,12 @@ module.exports = function GetSelf(i, o) {
     user.handle = handle || user.handle;
 
     if(avatar) {
-        user.avatar = Image.upload(
+        let image = Image.upload(
             avatar.originalFileName,
             avatar.path
-        )
+        );
+
+        user.avatar = `http://localhost:3000/image?id=${image.id}`;
     }
 
     if(!/^.{0,20}$/.test(user.username)) return o.status(400).end('Invalid username');
