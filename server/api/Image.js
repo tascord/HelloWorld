@@ -43,15 +43,16 @@ class Image {
 
     save = () => {
         if (!this.id) return;
-        images.set(this.id, this);
+        Images.set(this.id, this);
     }
 
     static upload = (name, path) => new Promise((resolve, reject) => {
 
-        let local_path = join(__dirname, '../', 'media', path);
+        let data = {};
+        console.log(path);
 
         // High Quality
-        gm(local_path)
+        gm(path)
             .noProfile() // Strip EXIF
             .toBuffer((err, buffer) => {
 
@@ -63,7 +64,7 @@ class Image {
                 }
 
                 // Low quality
-                gm('./' + path)
+                gm(path)
                     .noProfile() // Strip EXIF
                     .resize(180, 180 * (1080 / 1920))
                     .compress('Lossless')
@@ -77,7 +78,7 @@ class Image {
                         }
 
                         let image = new Image(data);
-                        unlinkSync(local_path);
+                        unlinkSync(path);
                         image.save();
 
                         return image;
