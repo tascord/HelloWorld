@@ -1,8 +1,11 @@
 const { User, GetUserByToken, GetUserByHandle } = require('../User');
+const { Image } = require('../Image');
 
 module.exports = function GetSelf(i, o) {
 
-    let { token, username, avatar, handle } = i.body;
+    let { token, username, handle } = i.body;
+    let { avatar } = i.files;
+
     if(!token) return o.status(400).end('No token');
     
     let user = GetUserByToken(token);
@@ -16,12 +19,18 @@ module.exports = function GetSelf(i, o) {
 
     user.username = username || user.username;
     user.handle = handle || user.handle;
-    user.avatar = avatar || user.avatar; 
+
+    if(avatar) {
+        user.avatar = Image.upload(
+            avatar.originalFileName,
+            avatar.path
+        )
+    }
 
     if(!/^.{0,20}$/.test(user.username)) return o.status(400).end('Invalid username');
     if(!/^[A-z0-9_.]{0,15}$/.test(user.handle)) return o.status(400).end('Invalid handle');
 
     user.save();
-    o.json(user.scrub());
+    o.redirect(`http://localhost:3000/profile/${user.handle}`);
 
 }

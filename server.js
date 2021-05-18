@@ -9,14 +9,14 @@ app.listen(3001, () => console.log('Started Server'));
 
 /* Incoming requests */
 app.use(require('body-parser').json());
-app.use(require('body-parser').urlencoded({ extended: true }));
 
-/* Uploading files */
-if(!existsSync(join(__dirname, 'server', 'media'))) mkdirSync(join(__dirname, 'server', 'media'));
-const multipart = require('connect-multiparty')({ uploadDir: join(__dirname, 'server', 'media'), maxFilesSize: 2400000, autoFiles: true });
+/* Incoming Files */
+if (!existsSync(join(__dirname, 'server', 'media'))) require('fs').mkdirSync(join(__dirname, 'server', 'media'));
+const multiparty = require('connect-multiparty')({ uploadDir: join(__dirname, 'server', 'media'), maxFilesSize: 2400000, autoFiles: true });
 
 /* CORS */
 const cors = require('cors');
+const { getImageById } = require('./server/api/Image');
 app.use(cors());
 
 /* API Routes */
@@ -27,23 +27,41 @@ readdirSync(join(__dirname, 'server', 'api', 'routes')).forEach(file => {
 
 /* Redirect GET Requests */
 app.get('*', (req, res) => {
-    res.redirect('http://localhost:3000');
+
+    if (req.path === '/image') {
+        if (!req.query.id) return res.status(400).end();
+        let image = getImageById(req.query.id);
+        if (!image) return res.status(400).end();
+
+        const img = Buffer.from(!req.query.low ? image.high.data : image.low.data, 'base64');
+
+        res.writeHead(200, {
+            'Content-Type': 'image/png',
+            'Content-Length': img.length
+        });
+
+        res.end(img);
+
+    }
+
+    else return res.redirect('http://localhost:3000');
+
 });
 
 /* Handle POST Requests */
-app.post('*', multipart, (req, res) => {
-    
+app.post('*', multiparty, (req, res) => {
+
     let path = req.path.slice(1) || 'index';
 
     console.log(`[/${path}] ${JSON.stringify(req.body)}`);
 
-    if(routes[path]) routes[path](req, res);
+    if (routes[path]) routes[path](req, res);
     else res.status(404).end();
 
 })
 
 /* Create System Account If Non-Existent */
-if(!GetUserById('system')) {
+if (!GetUserById('system')) {
 
     new User({
         username: 'System',
@@ -51,8 +69,8 @@ if(!GetUserById('system')) {
         handle: 'System',
         avatar: "/system.png",
         auth: 'd:2398201980593809809248309',
-        token: GenerateToken() ,
-        flags: [ User.FLAGS.SYSTEM ]
+        token: GenerateToken(),
+        flags: [User.FLAGS.SYSTEM]
     }).save();
 
 }

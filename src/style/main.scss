@@ -1,39 +1,35 @@
 // Fonts
-@import url('https://fonts.googleapis.com/css2?family=Yeseva+One&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Fugaz+One&display=swap');
-$font-header: 'Fugaz One', cursive;
-
+@import url("https://fonts.googleapis.com/css2?family=Yeseva+One&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fugaz+One&display=swap");
+$font-header: "Fugaz One", cursive;
 
 // Variables
 :root {
-
-    --white:   #eeeeee;
-    --light:   #a8a7a7;
-    --dark:    #1f1f2c;
-    --darker:  #11111a;
+    --white: #eeeeee;
+    --light: #a8a7a7;
+    --dark: #1f1f2c;
+    --darker: #11111a;
     --darkest: #0f0e18;
 
     --accent-light: #2c6ec4;
-    --accent:       #1d418f;
+    --accent: #1d418f;
 
-    --red-15:    hsl(0, 100%, 65%);
+    --red-15: hsl(0, 100%, 65%);
     --orange-15: hsl(30, 100%, 65%);
     --yellow-15: hsl(50, 100%, 65%);
-    --green-15:  hsl(90, 100%, 65%);
-    --blue-15:   hsl(220, 100%, 65%);
+    --green-15: hsl(90, 100%, 65%);
+    --blue-15: hsl(220, 100%, 65%);
     --purple-15: hsl(273, 100%, 65%);
-    --pink-15:   hsl(310, 100%, 65%);
+    --pink-15: hsl(310, 100%, 65%);
 
-    --red-100:    hsl(0, 100%, 50%);
+    --red-100: hsl(0, 100%, 50%);
     --orange-100: hsl(30, 100%, 50%);
     --yellow-100: hsl(50, 100%, 50%);
-    --green-100:  hsl(90, 100%, 50%);
-    --blue-100:   hsl(220, 100%, 50%);
+    --green-100: hsl(90, 100%, 50%);
+    --blue-100: hsl(220, 100%, 50%);
     --purple-100: hsl(273, 100%, 50%);
-    --pink-100:   hsl(310, 100%, 50%);
-
-
+    --pink-100: hsl(310, 100%, 50%);
 }
 
 // All elements
@@ -43,7 +39,6 @@ $font-header: 'Fugaz One', cursive;
 
 // Main page
 body {
-    
     max-width: 100vw;
     min-height: 100vh;
     padding: 0;
@@ -53,12 +48,10 @@ body {
 
     color: var(--white);
     background: var(--darkest);
-
 }
 
 // Main App
 .App {
-
     display: flex;
     justify-content: center;
     align-items: center;
@@ -68,12 +61,10 @@ body {
     &.mobile .content {
         width: 95%;
     }
-
 }
 
 // Panes
 .pane {
-
     width: 20vw;
     min-height: 100vh;
     height: 100%;
@@ -84,15 +75,12 @@ body {
         height: 100px;
         margin-bottom: 50px;
     }
-
 }
 
 // Sidebar
 .sidebar {
- 
     // Logo & text
     .header {
-
         display: flex;
         align-items: center;
         justify-content: flex-start;
@@ -108,11 +96,9 @@ body {
             font-weight: lighter;
             font-size: 4ch;
         }
-
     }
 
     .following {
-
         .user {
             position: relative;
             margin-bottom: 2.5%;
@@ -121,7 +107,7 @@ body {
             align-items: center;
             cursor: pointer;
             background: var(--darkest);
-            
+
             transition: 0.15s ease-in-out;
             &:hover {
                 background: var(--dark);
@@ -134,10 +120,9 @@ body {
             }
 
             .text {
-                
                 height: 20%;
                 margin-left: 5%;
-                
+
                 display: flex;
                 align-items: flex-start;
                 justify-content: center;
@@ -154,7 +139,6 @@ body {
                     color: #bbb;
                     font-weight: 400;
                 }
-
             }
 
             .live-indicator {
@@ -169,16 +153,12 @@ body {
                 background-color: var(--red-15);
                 animation: pulse-opacity 2s ease-in-out infinite;
             }
-
         }
-
     }
-    
 }
 
 // Content
 .content {
-
     width: 45%;
     padding: 0 2.5%;
 
@@ -189,7 +169,6 @@ body {
     }
 
     .profile {
-
         .banner {
             height: 150px;
             background-image: url(https://source.unsplash.com/1920x1080/?aesthetic);
@@ -200,7 +179,6 @@ body {
         }
 
         .details {
-
             display: flex;
             align-items: center;
             flex-direction: row;
@@ -228,7 +206,6 @@ body {
                     font-weight: lighter;
                     color: #bbb;
                 }
-
             }
 
             .follow {
@@ -239,18 +216,13 @@ body {
             background: var(--dark);
             border-bottom-left-radius: 15px;
             border-bottom-right-radius: 15px;
-
         }
-
     }
-
 }
 
 // Actions
 .actions {
-
     .header {
-
         width: 100%;
 
         display: flex;
@@ -262,37 +234,34 @@ body {
             height: 50px;
             border-radius: 100px;
         }
-        
-
     }
 
     .panel {
         margin-bottom: 15%;
     }
-
 }
 
 // Panels
 .panel {
-
     width: 100%;
     background: var(--dark);
     padding: 2.5% 5%;
     border-radius: 10px;
 
-    h1, h2, h3, button {
+    h1,
+    h2,
+    h3,
+    button {
         margin: 1ch 0;
     }
 
     &.profile-mini {
-
         display: flex;
         justify-content: center;
         align-items: flex-start;
         flex-direction: column;
 
         .name {
-            
             display: flex;
             justify-content: flex-start;
             align-items: center;
@@ -307,10 +276,9 @@ body {
             }
 
             .text {
-                
                 height: 20%;
                 margin-left: 5%;
-                
+
                 display: flex;
                 align-items: flex-start;
                 justify-content: center;
@@ -326,13 +294,10 @@ body {
                     color: #bbb;
                     font-weight: 400;
                 }
-
             }
-
         }
 
         .stats {
-
             width: 100%;
             height: 5ch;
 
@@ -341,7 +306,6 @@ body {
             align-items: center;
 
             span {
-
                 margin: 0.25ch 1ch 0;
                 padding: 0.5ch 1ch;
                 border-radius: 7.5px;
@@ -357,15 +321,11 @@ body {
                 &:hover {
                     background: var(--darker);
                 }
-
             }
-
         }
-
     }
 
     &.heya {
-
         display: flex;
         justify-content: center;
         align-items: flex-start;
@@ -378,9 +338,7 @@ body {
             align-items: center;
             flex-wrap: wrap;
         }
-
     }
-
 }
 
 // Anchor links
@@ -390,8 +348,8 @@ a {
 }
 
 // Buttons
-button, .button {
-
+button,
+.button {
     padding: 0.75ch 2ch;
     background-color: var(--darker);
     color: var(--white);
@@ -414,13 +372,10 @@ button, .button {
         color: var(--accent-light);
         border-color: var(--accent-light);
     }
-    
-
 }
 
 // Search box
 .search-box {
-
     z-index: 1;
     width: 95%;
     height: 50px;
@@ -445,11 +400,9 @@ button, .button {
         color: var(--white);
         font-size: 100%;
     }
-
 }
 
 .search-window {
-
     &:not(.searching) {
         display: none;
     }
@@ -466,7 +419,6 @@ button, .button {
     padding-top: 75px;
 
     .user {
-
         padding: 1% 2%;
         width: 95%;
         position: relative;
@@ -477,7 +429,7 @@ button, .button {
         cursor: pointer;
         background: var(--darkest);
         border-radius: 15px;
-        
+
         transition: 0.15s ease-in-out;
         &:hover {
             background: var(--dark);
@@ -490,10 +442,9 @@ button, .button {
         }
 
         .text {
-            
             height: 20%;
             margin-left: 5%;
-            
+
             display: flex;
             align-items: flex-start;
             justify-content: center;
@@ -510,16 +461,12 @@ button, .button {
                 color: #bbb;
                 font-weight: 400;
             }
-
         }
-
     }
-
 }
 
 // Profile editor
 .edit {
-
     z-index: 10;
 
     position: absolute;
@@ -527,7 +474,7 @@ button, .button {
     height: 100vh;
     top: 0;
     left: 0;
-    box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2); 
+    box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.2);
     background-color: rgba(36, 29, 54, 0.15);
     place-items: center;
     display: none;
@@ -540,11 +487,9 @@ button, .button {
         form {
             display: flex;
         }
-
     }
 
     form {
-
         display: none;
         justify-content: space-evenly;
         align-content: flex-start;
@@ -558,7 +503,6 @@ button, .button {
         }
 
         label {
-
             width: 100%;
 
             input[type="text"] {
@@ -574,7 +518,6 @@ button, .button {
                 &.invalid {
                     color: var(--red-15);
                 }
-
             }
 
             .error {
@@ -582,7 +525,6 @@ button, .button {
                 font-size: 100%;
                 color: var(--red-15);
             }
-
         }
 
         min-width: 30%;
@@ -590,24 +532,61 @@ button, .button {
 
         background: var(--darker);
         border: 2px solid var(--white);
+    }
+}
 
+.imageUpload {
+    margin-bottom: 1ch;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    
+    img {
+        width: 100px;
+        height: 100px;
+        border-radius: 100ch;
+        cursor: pointer;
+    }
+
+    input {
+        display: none;
+        position: absolute;
+        width: 100px;
+        height: 100px;
     }
 
 }
 
 // Animations
 @keyframes pulse-opacity {
-    0%    { opacity: 1; }
-    50%   { opacity: 0; }
-    100%  { opacity: 1; }
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 @keyframes blur {
-    0%   { backdrop-filter: blur(0px); }
-    100% { backdrop-filter: blur(5px); }
-} 
+    0% {
+        backdrop-filter: blur(0px);
+    }
+    100% {
+        backdrop-filter: blur(5px);
+    }
+}
 
 @keyframes scale-in {
-    0%   { transform: scale(0); }
-    100% { transform: scale(1); }
+    0% {
+        transform: scale(0);
+    }
+    100% {
+        transform: scale(1);
+    }
 }

@@ -15,7 +15,6 @@ export default class Profile extends Component {
             edits: {
                 username: '',
                 handle: '',
-                avatar: ''
             }
         };
 
@@ -32,7 +31,7 @@ export default class Profile extends Component {
         })
 
             .then(data => {
-                this.setState({ other: data, following: this.user.following.indexOf(data.id) !== -1, edits: { username: data.username, handle: data.handle, avatar: data.avatar } });
+                this.setState({ other: data, following: this.user.following.indexOf(data.id) !== -1, edits: { username: data.username, handle: data.handle } });
             })
 
             .catch((e) => {
@@ -60,68 +59,51 @@ export default class Profile extends Component {
 
     }
 
-    saveEdits = (event) => {
-
-        Request('http://localhost:3001/edit', {
-            token: this.props.user.token,
-            username: document.getElementById('username').value,
-            handle: document.getElementById('handle').value,
-            avatar: document.getElementById('avatar').value,
-        })
-
-        .then((new_user) => {
-            document.getElementById('error').innerText = '';
-            
-            this.setState({
-                editOpen: false
-            });
-
-            if(new_user.handle !== this.user.handle) window.location.pathname = `/profile/${new_user.handle}`;
-        })
-
-        .catch((error) => {
-            document.getElementById('error').innerText = error;
-        })
-
-        event.preventDefault();
-        return false;
-
-    }
-
     handleEdits = (event) => {
-        
+
         let edits = this.state.edits;
-        
-        if(event.target.id === 'username') {
-            if(!/^.{0,20}$/.test(event.target.value)) event.target.classList = 'invalid';
+
+        if (event.target.id === 'username') {
+            if (!/^.{0,20}$/.test(event.target.value)) event.target.classList = 'invalid';
             else event.target.classList = '';
             edits.username = event.target.value;
         }
-        
-        else if(event.target.id === 'handle') {
-            if(!/^[A-z0-9_.]{0,15}$/.test(event.target.value)) event.target.classList = 'invalid';
+
+        else if (event.target.id === 'handle') {
+            if (!/^[A-z0-9_.]{0,15}$/.test(event.target.value)) event.target.classList = 'invalid';
             else event.target.classList = '';
             edits.handle = event.target.value;
-        }
-
-        if(event.target.id === 'avatar') {
-            if(!/^.+$/.test(event.target.value)) event.target.classList = 'invalid';
-            else event.target.classList = '';
-            edits.avatar = event.target.value;
         }
 
         this.setState({ edits })
     }
 
+    imageUpload = () => {
+
+
+        let file = document.getElementById('avatar').files[0];
+        if (!file) return console.log('No file');
+        else console.log('File!');
+
+        let reader = new FileReader();
+        reader.onload = (event) => {
+            console.log('File read!');
+            document.getElementById('imagePreview').src = event.target.result;
+        }
+
+        reader.readAsDataURL(file);
+
+
+    }
+
     exitEdits = (event) => {
 
-        if(!(event.srcElement || event.target).classList.contains('edit')) return;
+        if (!(event.srcElement || event.target).classList.contains('edit')) return;
 
         this.setState({
             edits: {
                 username: this.state.other.username,
                 handle: this.state.other.handle,
-                avatar: this.state.other.avatar,
             },
             editOpen: false
         })
@@ -140,25 +122,28 @@ export default class Profile extends Component {
                 </div>
 
                 <div className={"edit" + (this.state.editOpen ? " open" : "")} onClick={this.exitEdits}>
-                    <form>
+                    <form action="http://localhost:3001/edit" method="POST" encType="multipart/form-data">
+                        <label>
+                            <div className="imageUpload">
+                                <input name="avatar" id="avatar" type="file" onChange={this.imageUpload}></input>
+                                <img alt="Avatar" id="imagePreview" src={this.props.user.avatar}></img>
+                            </div>
+                        </label>
                         <label>
                             <h3 className="error" id="error" aria-hidden="true"></h3>
                         </label>
                         <label>
                             <h3>Username</h3>
-                            <input id="username" type="text" autoComplete="off" autoCorrect="off" value={this.state.edits.username} onChange={this.handleEdits}></input>
+                            <input name="username" id="username" type="text" autoComplete="off" autoCorrect="off" value={this.state.edits.username} onChange={this.handleEdits}></input>
                         </label>
                         <label>
                             <h3>Handle</h3>
-                            <input id="handle" type="text" autoComplete="off" autoCorrect="off" value={this.state.edits.handle} onChange={this.handleEdits}></input>
+                            <input name="handle" id="handle" type="text" autoComplete="off" autoCorrect="off" value={this.state.edits.handle} onChange={this.handleEdits}></input>
                         </label>
                         <label>
-                            <h3>Avatar (URL)</h3>
-                            <input id="avatar" type="text" autoComplete="off" autoCorrect="off" value={this.state.edits.avatar} onChange={this.handleEdits}></input>
+                            <button><i className="fas fa-save"></i> Save</button>
                         </label>
-                        <label>
-                            <button onClick={this.saveEdits}><i className="fas fa-save"></i> Save</button>
-                        </label>
+                        <input type="text" hidden="true" name="token" value={this.props.user.token}></input>
                     </form>
                 </div>
 
