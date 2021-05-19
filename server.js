@@ -96,5 +96,5 @@ if (!GetUserById('system')) {
 
 module.exports = (port, new_locations) => {
     locations = new_locations;
-    app.listen(port, () => app.listen(port, () => console.log(grey('(') + cyanBright('BRC') + grey(') ') + greenBright('API started @') + cyanBright(locations.api))));
+    app.listen(port, () => app.listen(port, () => console.log(grey('(') + cyanBright('BRC') + grey(') ') + greenBright('API started @') + cyanBright(locations.api) + grey(` [${port}]`))));
 }

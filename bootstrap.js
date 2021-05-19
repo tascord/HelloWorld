@@ -23,7 +23,7 @@ const start_api = (port) => {
 const start_brc = (port) => {
 
     const app = require('express')();
-    app.listen(port, () => console.log(grey('(') + cyanBright('BRC') + grey(') ') + greenBright('BRC started @ ') + cyanBright(locations.site)));
+    app.listen(port, () => console.log(grey('(') + cyanBright('BRC') + grey(') ') + greenBright('BRC started @ ') + cyanBright(locations.site) + grey(` [${port}]`)));
 
     app.get('*', (req, res) => {
 
