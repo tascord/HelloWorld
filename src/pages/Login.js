@@ -20,7 +20,14 @@ export default function Login({ setToken, discord, locations }) {
         window.location.pathname = 'dashboard';
 
       })
-      .catch(console.warn);
+      .catch((error) => {
+
+        console.warn(error);
+        setTimeout(() => {
+          window.location.pathname = '/dashboard'
+        }, 3500);
+
+      });
 
     return (<></>);
   } else if(window.location.search) {
@@ -35,7 +42,7 @@ export default function Login({ setToken, discord, locations }) {
           <p>By continuing you accept our <b>Privacy Policy</b> and <b>Terms of Service</b></p>
         </label>
         <label>
-          <a className="button discord" href="https://discord.com/api/oauth2/authorize?client_id=571966498189344778&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fdiscord&response_type=code&scope=identify">
+          <a className="button discord" href={`https://discord.com/api/oauth2/authorize?client_id=844532797271703554&redirect_uri=${locations.self + '/discord'}&response_type=code&scope=identify`}>
             <img alt="Discord's Logo" src="/discord.png"></img>
            Login with Discord
          </a>

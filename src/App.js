@@ -13,6 +13,9 @@ const login_urls = [
 ]
 
 const locations = {
+    // self: 'http://localhost:3000',
+    // api: 'http://localhost:3001',
+
     self: 'https://bedroom.community',
     api: 'https://api.bedroom.community'
 }
@@ -84,7 +87,7 @@ export default class App extends Component {
 
                         {/* Discord Login */}
                         <Route path="/discord">
-                            <Login setToken={setToken} discord="true" location={locations} />
+                            <Login setToken={setToken} discord="true" locations={locations} />
                         </Route>
 
                     </Switch>

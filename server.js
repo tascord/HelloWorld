@@ -2,10 +2,12 @@
 const { User, GetUserById, GenerateToken } = require('./server/api/User');
 const { readdirSync, existsSync, mkdirSync } = require('fs');
 const { join } = require('path');
+const { grey, cyanBright, redBright, whiteBright, greenBright } = require('chalk');
+
 
 /* Server setup */
 const app = require('express')();
-app.listen(3000, () => console.log('Started Server'));
+let locations = {};
 
 /* Incoming requests */
 app.use(require('body-parser').json());
@@ -29,9 +31,18 @@ readdirSync(join(__dirname, 'server', 'api', 'routes')).forEach(file => {
 app.get('*', (req, res) => {
 
     if (req.path === '/image') {
-        if (!req.query.id) return res.status(400).end();
+
+        if (!req.query.id) {
+            console.log(grey('(') + cyanBright('API') + grey(') ') + redBright('GET ') + whiteBright(req.path + ' ') + grey('No image ID provided'));
+            return res.status(400).end('No image ID provided');
+        }
+
         let image = getImageById(req.query.id);
-        if (!image) return res.status(400).end();
+
+        if (!image) {
+            console.log(grey('(') + cyanBright('API') + grey(') ') + redBright('GET ') + whiteBright(req.path + ' ') + grey('Invalid image ID'));
+            return res.status(400).end('Invalid image ID');
+        }
 
         const img = Buffer.from(!req.query.low ? image.high.data : image.low.data, 'base64');
 
@@ -42,9 +53,10 @@ app.get('*', (req, res) => {
 
         res.end(img);
 
+        console.log(grey('(') + cyanBright('API') + grey(') ') + greenBright('GET ') + whiteBright(req.path + ' '));
     }
 
-    else return res.redirect('https://bedroom.community');
+    else return res.redirect(locations.site);
 
 });
 
@@ -52,11 +64,17 @@ app.get('*', (req, res) => {
 app.post('*', multiparty, (req, res) => {
 
     let path = req.path.slice(1) || 'index';
+    req.locations = locations;
 
-    console.log(`[/${path}] ${JSON.stringify(req.body)}`);
+    if (routes[path]) {
+        routes[path](req, res);
+        console.log(grey('(') + cyanBright('API') + grey(') ') + greenBright('POST ') + whiteBright(req.path + ' ') + grey('Endpoint exists'));
+    }
 
-    if (routes[path]) routes[path](req, res);
-    else res.status(404).end();
+    else {
+        res.status(404).end();
+        console.log(grey('(') + cyanBright('API') + grey(') ') + redBright('POST ') + whiteBright(req.path + ' '));
+    }
 
 })
 
@@ -75,3 +93,8 @@ if (!GetUserById('system')) {
 
 }
 
+
+module.exports = (port, new_locations) => {
+    locations = new_locations;
+    app.listen(port, () => app.listen(port, () => console.log(grey('(') + cyanBright('BRC') + grey(') ') + greenBright('API started @') + cyanBright(locations.api))));
+}

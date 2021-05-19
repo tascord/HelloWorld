@@ -118,7 +118,7 @@ export default class Profile extends Component {
             <div className="pane content">
 
                 <div className="header">
-                    <SearchWindow user={this.props.user} />
+                    <SearchWindow user={this.props.user} locations={this.props.locations} />
                 </div>
 
                 <div className={"edit" + (this.state.editOpen ? " open" : "")} onClick={this.exitEdits}>
