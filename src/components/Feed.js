@@ -8,7 +8,7 @@ export default class Actions extends Component {
         return (
             <div className="pane content">
                 <div className="header">
-                    <SearchWindow user={this.props.user} />
+                    <SearchWindow locations={this.props.locations} user={this.props.user} />
                 </div>
                 <h2>Feed</h2>
             </div>

@@ -21,7 +21,7 @@ export default class SearchWindow extends Component {
         this.setState({ query });
         if(!this.state.query) return;
 
-        Request('http://localhost:3001/search', {
+        Request(`${this.props.locations.api}/search`, {
             token: this.props.user.token,
             query: this.state.query
         })

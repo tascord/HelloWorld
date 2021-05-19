@@ -4,7 +4,7 @@ import Sidebar from '../components/Sidebar';
 import Actions from '../components/Actions';
 import ProfileFeed from '../components/Profile';
 
-export default function Profile({ user }) {
+export default function Profile({ user, locations }) {
 
   const desktop = useMediaQuery({ minWidth: 1440 });
   const tablet = useMediaQuery({ minWidth: 1265 });
@@ -12,9 +12,9 @@ export default function Profile({ user }) {
   
   return (
     <div className="App">
-      {tablet ? <Sidebar user={user} tablet={tablet} /> : ''}
-      <ProfileFeed user={user} />
-      {desktop ? <Actions user={user} /> : ''}
+      {tablet ? <Sidebar locations={locations} user={user} tablet={tablet} /> : ''}
+      <ProfileFeed locations={locations} user={user} />
+      {desktop ? <Actions locations={locations} user={user} /> : ''}
     </div>
   );
 }

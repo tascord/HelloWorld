@@ -20,7 +20,7 @@ export default class Sidebar extends Component {
 
         this.props.user.following.forEach(i => {
 
-            Request('http://localhost:3001/user', {
+            Request(`${this.props.locations.api}/user`, {
                 id: i
             })
 

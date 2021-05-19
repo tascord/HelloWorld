@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import Request from '../helpers/Request';
 import '../style/login.css';
 
-export default function Login({ setToken, discord }) {
+export default function Login({ setToken, discord, locations }) {
 
   if (discord) {
     
     let code = window.location.search.replace(/(?:(?:&|\\?)code=((?:[a-z0-9])+))(?:&|)/gi, '$1').slice(1);
-    Request('http://localhost:3001/discord', {code})
+    Request(`${locations.api}/discord`, {code})
       .then(data => {
         
         let token = data.token.value;

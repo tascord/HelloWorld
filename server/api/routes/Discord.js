@@ -5,7 +5,7 @@ const token_options = {
     client_id: '571966498189344778',
     client_secret: 'xJ5SyOQTgMG_UZo8t906nPBWojtPFtTZ',
     grant_type: 'authorization_code',
-    redirect_uri: 'http://localhost:3000/discord',
+    redirect_uri: 'https://bedroom.community/discord',
     scope: 'identity'
 }
 

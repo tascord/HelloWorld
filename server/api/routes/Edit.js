@@ -31,10 +31,10 @@ module.exports = function GetSelf(i, o) {
         
             .then(image => {
 
-                user.avatar = `http://localhost:3001/image?id=${image.id}`;
+                user.avatar = `https://api.bedroom.community/image?id=${image.id}`;
 
                 user.save();
-                o.redirect(`http://localhost:3000/profile/${user.handle}`);
+                o.redirect(`https://bedroom.community/profile/${user.handle}`);
 
             })
 
@@ -47,7 +47,7 @@ module.exports = function GetSelf(i, o) {
 
     else {
         user.save();
-        o.redirect(`http://localhost:3000/profile/${user.handle}`);
+        o.redirect(`https://bedroom.community/profile/${user.handle}`);
     }
 
 }

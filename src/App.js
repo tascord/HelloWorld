@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
-import Preferences from './pages/Preferences';
 import Login from './pages/Login';
 import Request from './helpers/Request';
 
@@ -12,6 +11,11 @@ import './style/main.css'
 const login_urls = [
     '/discord'
 ]
+
+const locations = {
+    self: 'https://bedroom.community',
+    api: 'https://api.bedroom.community'
+}
 
 function setToken(token) {
     sessionStorage.setItem('token', token);
@@ -40,7 +44,7 @@ export default class App extends Component {
     componentDidMount() {
 
         if (!getToken()) return;
-        Request('http://localhost:3001/self', {
+        Request(`${locations.api}/self`, {
             token: getToken()
         })
 
@@ -61,7 +65,7 @@ export default class App extends Component {
             return <></>;
         }
 
-        if (!getToken() && login_urls.indexOf(window.location.pathname) === -1) return <Login setToken={setToken}></Login>
+        if (!getToken() && login_urls.indexOf(window.location.pathname) === -1) return <Login setToken={setToken} locations={locations}></Login>
         if (window.location.search && login_urls.indexOf(window.location.pathname)) window.location = window.location.origin + window.location.pathname;
 
         return (
@@ -71,21 +75,16 @@ export default class App extends Component {
 
                         {/* Feed */}
                         <Route path="/dashboard">
-                            <Dashboard user={this.state.user} />
+                            <Dashboard user={this.state.user} locations={locations} />
                         </Route>
 
                         <Route path="/profile">
-                            <Profile user={this.state.user} />
-                        </Route>
-
-                        {/* Settings */}
-                        <Route path="/preferences">
-                            <Preferences />
+                            <Profile user={this.state.user} locations={locations} />
                         </Route>
 
                         {/* Discord Login */}
                         <Route path="/discord">
-                            <Login setToken={setToken} discord="true" />
+                            <Login setToken={setToken} discord="true" location={locations} />
                         </Route>
 
                     </Switch>

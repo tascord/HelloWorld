@@ -5,7 +5,7 @@ const { join } = require('path');
 
 /* Server setup */
 const app = require('express')();
-app.listen(3001, () => console.log('Started Server'));
+app.listen(3000, () => console.log('Started Server'));
 
 /* Incoming requests */
 app.use(require('body-parser').json());
@@ -44,7 +44,7 @@ app.get('*', (req, res) => {
 
     }
 
-    else return res.redirect('http://localhost:3000');
+    else return res.redirect('https://bedroom.community');
 
 });
 

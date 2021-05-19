@@ -26,7 +26,7 @@ export default class Profile extends Component {
 
         this.user = this.props.user;
 
-        Request('http://localhost:3001/user', {
+        Request(`${this.props.locations.api}/user`, {
             handle: this.other_name
         })
 
@@ -43,7 +43,7 @@ export default class Profile extends Component {
     follow = (unfollow = false) => {
 
         if (!this.state.other['id']) return;
-        Request(`http://localhost:3001/${unfollow ? 'unfollow' : 'follow'}`, {
+        Request(`${this.props.locations.api}/${unfollow ? 'unfollow' : 'follow'}`, {
             token: this.user['token'],
             other: this.state.other['id']
         })
@@ -122,7 +122,7 @@ export default class Profile extends Component {
                 </div>
 
                 <div className={"edit" + (this.state.editOpen ? " open" : "")} onClick={this.exitEdits}>
-                    <form action="http://localhost:3001/edit" method="POST" encType="multipart/form-data">
+                    <form action={`${this.props.locations.api}/edit`} method="POST" encType="multipart/form-data">
                         <label>
                             <div className="imageUpload">
                                 <div className="whiteOut"></div>

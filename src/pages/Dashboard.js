@@ -4,7 +4,7 @@ import Sidebar from '../components/Sidebar';
 import Actions from '../components/Actions';
 import Feed from '../components/Feed';
 
-export default function Dashboard({ user }) {
+export default function Dashboard({ user, locations }) {
 
   const desktop = useMediaQuery({ minWidth: 1440 });
   const tablet = useMediaQuery({ minWidth: 1265 });
@@ -12,9 +12,9 @@ export default function Dashboard({ user }) {
   
   return (
     <div className={"App" + (!tablet ? ' mobile' : '')}>
-      {tablet ? <Sidebar user={user} tablet={tablet} /> : ''}
-      <Feed user={user} />
-      {desktop ? <Actions user={user} /> : ''}
+      {tablet ? <Sidebar locations={locations} user={user} tablet={tablet} /> : ''}
+      <Feed locations={locations} user={user} />
+      {desktop ? <Actions locations={locations} user={user} /> : ''}
     </div>
   );
 }
