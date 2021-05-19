@@ -68,25 +68,21 @@ else {
     const { HTTPS, WebImplementation } = require('/opt/DeployManager/src/lib');
     
     const brc = new WebImplementation(
-        'tsib', // Name
+        'BRC-SRV', // Name
         new HTTPS('/etc/letsencrypt/live/bedroom.community/fullchain.pem', '/etc/letsencrypt/live/bedroom.community/privkey.pem', true), // Protocol
         'image.tascord.ai', // External URL
         true, // Force creation
     );
 
-    brc.on('ready', () => {
-        
-        start_brc(brc.port)
+    const api = new WebImplementation(
+        'BRC-API', // Name
+        new HTTPS('/etc/letsencrypt/live/api.bedroom.community/fullchain.pem', '/etc/letsencrypt/live/api.bedroom.community/privkey.pem', true), // Protocol
+        'image.tascord.ai', // External URL
+        true, // Force creation
+    );
 
-        const api = new WebImplementation(
-            'tsib', // Name
-            new HTTPS('/etc/letsencrypt/live/bedroom.community/fullchain.pem', '/etc/letsencrypt/live/bedroom.community/privkey.pem', true), // Protocol
-            'image.tascord.ai', // External URL
-            true, // Force creation
-        );
-    
-        api.on('ready', () => start_api(api.port));
+    brc.on('ready', () => start_brc(brc.port));
+    api.on('ready', () => start_api(api.port));
 
-    });
 
 }
