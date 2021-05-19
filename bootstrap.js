@@ -70,14 +70,14 @@ else {
     const brc = new WebImplementation(
         'BRC-SRV', // Name
         new HTTPS('/etc/letsencrypt/live/bedroom.community/fullchain.pem', '/etc/letsencrypt/live/bedroom.community/privkey.pem', true), // Protocol
-        'image.tascord.ai', // External URL
+        'bedroom.community', // External URL
         true, // Force creation
     );
 
     const api = new WebImplementation(
         'BRC-API', // Name
         new HTTPS('/etc/letsencrypt/live/api.bedroom.community/fullchain.pem', '/etc/letsencrypt/live/api.bedroom.community/privkey.pem', true), // Protocol
-        'image.tascord.ai', // External URL
+        'api.bedroom.community', // External URL
         true, // Force creation
     );
 
