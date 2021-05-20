@@ -56,6 +56,17 @@ body {
           flex-direction: row;
 }
 
+.App.tablet .content .search-box {
+  width: 75%;
+}
+
+.App.tablet .content .search-window {
+  padding-top: 65px;
+  top: 18.5%;
+  width: 100%;
+  left: -0.5%;
+}
+
 .App.mobile .content {
   width: 95%;
 }
@@ -199,9 +210,51 @@ body {
   background-size: cover;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+}
+
+.content .profile .banner .badges {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  width: 100%;
+  height: 25px;
+}
+
+.content .profile .banner .badges span {
+  padding: 0.75ch 1.5ch;
+  background-color: var(--dark);
+  cursor: pointer;
+  color: var(--light);
+  -webkit-transition: color 0.15s ease-in-out;
+  transition: color 0.15s ease-in-out;
+}
+
+.content .profile .banner .badges span:first-child {
+  border-top-left-radius: 15px;
+}
+
+.content .profile .banner .badges span:hover {
+  color: var(--blue-15);
 }
 
 .content .profile .details {
+  height: 85px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -219,8 +272,8 @@ body {
 }
 
 .content .profile .details .avatar {
-  width: calc(max(12.5vmin, 5rem));
-  height: calc(max(12.5vmin, 5rem));
+  width: calc(min(max(12.5vmin, 5rem), 90px));
+  height: calc(min(max(12.5vmin, 5rem), 90px));
   position: absolute;
   top: -25%;
   left: 5%;
@@ -230,7 +283,7 @@ body {
 
 .content .profile .details .text {
   max-width: 45%;
-  margin-left: calc(5% + max(12.5vmin, 5rem) + 2.5%);
+  margin-left: calc(5% + min(max(12.5vmin, 5rem), 90px) + 2.5%);
 }
 
 .content .profile .details .text h2 {
@@ -323,14 +376,14 @@ body {
 }
 
 .panel.profile-mini .name img {
-  width: 20%;
-  height: 20%;
+  width: 50px;
+  height: 50px;
   border-radius: 100px;
 }
 
 .panel.profile-mini .name .text {
   max-width: 70%;
-  height: 20%;
+  height: 50px;
   margin-left: 5%;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -466,7 +519,7 @@ button:hover,
 }
 
 .search-box {
-  z-index: 1;
+  z-index: 14;
   width: 95%;
   height: 50px;
   padding: 2.5% 2.5%;
@@ -499,6 +552,7 @@ button:hover,
 }
 
 .search-window {
+  z-index: 13;
   position: absolute;
   min-height: 80px;
   width: 100%;
@@ -548,8 +602,8 @@ button:hover,
 }
 
 .search-window .user img {
-  width: 10%;
-  height: 10%;
+  width: 50px;
+  height: 50px;
   border-radius: 100px;
 }
 
@@ -584,7 +638,7 @@ button:hover,
 }
 
 .edit {
-  z-index: 10;
+  z-index: 20;
   position: absolute;
   width: 100vw;
   height: 100vh;
@@ -623,8 +677,8 @@ button:hover,
       -ms-flex-direction: column;
           flex-direction: column;
   border-radius: 15px;
-  padding: 2%;
-  min-width: 30%;
+  padding: 2ch;
+  width: calc(min(350px, 95vw));
   min-height: 20%;
   background: var(--darker);
   border: 2px solid var(--white);
@@ -655,6 +709,10 @@ button:hover,
   color: var(--red-15);
 }
 
+.edit form label button {
+  margin-top: 1ch;
+}
+
 .edit form label .error {
   margin-bottom: 1ch;
   font-size: 100%;
@@ -680,7 +738,7 @@ button:hover,
 .imageUpload img {
   width: 100px;
   height: 100px;
-  border-radius: 100ch;
+  border-radius: 100px;
 }
 
 .imageUpload input {
@@ -694,7 +752,7 @@ button:hover,
   position: absolute;
   width: 100px;
   height: 100px;
-  border-radius: 100ch;
+  border-radius: 100px;
   background: var(--white);
   cursor: pointer;
   opacity: 0;
@@ -718,12 +776,12 @@ button:hover,
   height: 50px;
   border-radius: 100px;
   cursor: pointer;
-  z-index: 15;
+  z-index: 18;
   border: 2px solid var(--white);
 }
 
 .avatarMini .profileMenu {
-  z-index: 10;
+  z-index: 17;
   border: 2px solid var(--white);
   display: none;
   width: 20ch;

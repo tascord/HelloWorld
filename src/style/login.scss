@@ -8,10 +8,11 @@
 
     .inner {
 
-        padding: 3ch 5ch;
+        border: 2px solid var(--white);
+        width: calc(min(350px, 95vw));
+        min-height: 30%;
 
-        width: 50ch;
-        height: 45%;
+        padding: 2ch 5ch;
 
         display: flex;
         flex-direction: column;

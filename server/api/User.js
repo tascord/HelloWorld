@@ -48,6 +48,7 @@ const User = class User {
             auth: this.auth,
             avatar: this.avatar,
             token: this.token,
+            flags: this.flags,
 
             followers: this.followers,
             following: this.following

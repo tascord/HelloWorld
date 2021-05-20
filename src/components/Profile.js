@@ -16,7 +16,8 @@ export default class Profile extends Component {
             edits: {
                 username: '',
                 handle: '',
-            }
+            },
+            badges: ''
         };
 
         this.other_name = window.location.pathname.split('/').slice(1).pop();
@@ -32,7 +33,36 @@ export default class Profile extends Component {
         })
 
             .then(data => {
-                this.setState({ other: data, following: this.user.following.indexOf(data.id) !== -1, edits: { username: data.username, handle: data.handle } });
+
+                let badges = [];
+                data.flags.forEach(flag => {
+
+                    switch (flag) {
+
+                        case "SYSTEM":
+                            badges.push(`<span><i class="fas fa-tools"></i> System Account</span>`);
+                            break;
+
+                        case "BOT":
+                            badges.push(`<span><i class="fas fa-robot"></i> Bot Account</span>`);
+                            break;
+
+                        case "VERIFIED":
+                            badges.push(`<span><i class="fas fa-user-check"></i> Verified Account</span>`);
+                            break;
+
+                        case "STAFF":
+                            badges.push(`<span><i class="fas fa-hard-hat"></i> Staff Member</span>`);
+                            break;
+
+                        default: break;
+
+                    }
+
+                });
+
+                this.setState({ other: data, following: this.user.following.indexOf(data.id) !== -1, edits: { username: data.username, handle: data.handle }, badges: badges.join('\n') });
+
             })
 
             .catch((e) => {
@@ -152,7 +182,10 @@ export default class Profile extends Component {
 
                 <div className="profile">
 
-                    <div className="banner"></div>
+                    <div className="banner">
+                        <div className="badges" dangerouslySetInnerHTML={{ __html: this.state.badges }}>
+                        </div>
+                    </div>
                     <div className="details">
                         <img className="avatar" src={this.state.other !== false ? this.state.other.avatar : '/system.png'} alt={"Avatar of " + this.state.other.username}></img>
                         <div className="text">

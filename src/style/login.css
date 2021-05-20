@@ -7,9 +7,10 @@
 }
 
 .login .inner {
-  padding: 3ch 5ch;
-  width: 50ch;
-  height: 45%;
+  border: 2px solid var(--white);
+  width: calc(min(350px, 95vw));
+  min-height: 30%;
+  padding: 2ch 5ch;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

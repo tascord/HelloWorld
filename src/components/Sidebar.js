@@ -43,7 +43,7 @@ export default class Sidebar extends Component {
     render() {
 
         return (
-            <div className={"sidebar pane" + (this.props.tablet ? " tablet" : "")}>
+            <div className="sidebar pane">
                 <div className="header">
                     <h2><a href="/dashboard">BR.C</a></h2>
                 </div>

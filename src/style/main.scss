@@ -58,6 +58,24 @@ body {
     flex-direction: row;
     // margin: 0 5%;
 
+    &.tablet .content {
+
+        .avatarMini {
+        }
+
+        .search-box {
+            width: 75%;
+        }
+
+        .search-window {
+            padding-top: 65px;
+            top: 18.5%;
+            width: 100%;
+            left: -0.5%;
+        }
+
+    }
+
     &.mobile .content {
         width: 95%;
         .profile .details button {
@@ -180,24 +198,61 @@ body {
     }
 
     .profile {
+
         .banner {
+            
             height: 150px;
             background-image: url(https://source.unsplash.com/1920x1080/?aesthetic);
             background-position: center;
             background-size: cover;
             border-top-left-radius: 15px;
             border-top-right-radius: 15px;
+            
+            display: flex;
+            align-items: flex-end;
+
+            .badges {
+
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                flex-direction: row;
+
+                width: 100%;
+                height: 25px;
+
+                span {
+
+                    &:first-child {
+                        border-top-left-radius: 15px;
+                    }
+
+                    padding: 0.75ch 1.5ch;
+                    background-color: var(--dark);
+                    cursor: pointer;
+                    color: var(--light);
+                    
+                    transition: color 0.15s ease-in-out;
+                    &:hover {
+                        color: var(--blue-15);
+                    }
+
+                }
+
+            }
+
         }
 
         .details {
+            height: 85px;
             display: flex;
             align-items: center;
             flex-direction: row;
             position: relative;
 
             .avatar {
-                width: calc(max(12.5vmin, 5rem));
-                height: calc(max(12.5vmin, 5rem));
+                width: calc(min(max(12.5vmin, 5rem), 90px));
+                height: calc(min(max(12.5vmin, 5rem), 90px));
                 position: absolute;
                 top: -25%;
                 left: 5%;
@@ -207,7 +262,7 @@ body {
 
             .text {
                 max-width: 45%;
-                margin-left: calc(5% + max(12.5vmin, 5rem) + 2.5%);
+                margin-left: calc(5% + min(max(12.5vmin, 5rem), 90px) + 2.5%);
 
                 h2 {
                     margin: 1ch 0 0;
@@ -285,15 +340,15 @@ body {
             margin-left: 1ch;
 
             img {
-                width: 20%;
-                height: 20%;
+                width: 50px;
+                height: 50px;
                 border-radius: 100px;
             }
 
             .text {
 
                 max-width: 70%;
-                height: 20%;
+                height: 50px;
                 margin-left: 5%;
 
                 display: flex;
@@ -405,7 +460,7 @@ button,
 
 // Search box
 .search-box {
-    z-index: 1;
+    z-index: 14;
     width: 95%;
     height: 50px;
     padding: 2.5% 2.5%;
@@ -436,6 +491,7 @@ button,
         display: none;
     }
 
+    z-index: 13;
     position: absolute;
     min-height: 80px;
     width: 100%;
@@ -465,8 +521,8 @@ button,
         }
 
         img {
-            width: 10%;
-            height: 10%;
+            width: 50px;
+            height: 50px;
             border-radius: 100px;
         }
 
@@ -496,7 +552,7 @@ button,
 
 // Profile editor
 .edit {
-    z-index: 10;
+    z-index: 20;
 
     position: absolute;
     width: 100vw;
@@ -524,7 +580,7 @@ button,
         align-content: flex-start;
         flex-direction: column;
         border-radius: 15px;
-        padding: 2%;
+        padding: 2ch;
 
         h3 {
             color: var(--accent-light);
@@ -549,6 +605,10 @@ button,
                 }
             }
 
+            button {
+                margin-top: 1ch;
+            }
+
             .error {
                 margin-bottom: 1ch;
                 font-size: 100%;
@@ -556,7 +616,7 @@ button,
             }
         }
 
-        min-width: 30%;
+        width: calc(min(350px, 95vw));
         min-height: 20%;
 
         background: var(--darker);
@@ -576,7 +636,7 @@ button,
     img {
         width: 100px;
         height: 100px;
-        border-radius: 100ch;
+        border-radius: 100px;
     }
 
     input {
@@ -590,7 +650,7 @@ button,
         position: absolute;
         width: 100px;
         height: 100px;
-        border-radius: 100ch;
+        border-radius: 100px;
         background: var(--white);
         cursor: pointer;
         opacity: 0;
@@ -614,12 +674,12 @@ button,
         height: 50px;
         border-radius: 100px;
         cursor: pointer;
-        z-index: 15;
+        z-index: 18;
         border: 2px solid var(--white);
     }
 
     .profileMenu {
-        z-index: 10;
+        z-index: 17;
         border: 2px solid var(--white);
         display: none;
         width: 20ch;

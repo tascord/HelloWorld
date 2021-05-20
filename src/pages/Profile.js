@@ -34,7 +34,7 @@ export default function Profile({ user, locations }) {
   const tablet = (dimensions.width / dimensions.height) > 1.1;
 
   return (
-    <div className={"App" + (!tablet ? ' mobile' : '')}>
+    <div className={"App" + (!tablet ? ' mobile' : '') + (!desktop ? ' tablet' : '')}>
       {tablet ? <Sidebar locations={locations} user={user} tablet={tablet} /> : ''}
       <ProfileFeed locations={locations} user={user} tablet={desktop} />
       {desktop ? <Actions locations={locations} user={user} /> : ''}
