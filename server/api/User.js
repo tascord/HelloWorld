@@ -49,8 +49,8 @@ const User = class User {
             avatar: this.avatar,
             token: this.token,
 
-            followers: this.followers.map(f => f.id),
-            following: this.following.map(f => f.id)
+            followers: this.followers,
+            following: this.following
 
         }
     }
