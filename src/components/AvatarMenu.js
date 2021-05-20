@@ -30,7 +30,7 @@ export default class AvatarMenu extends Component {
             <div className="avatarMini">
                 <img id="avatarMenu" alt="Avatar" src={this.props.user.avatar} onClick={() => this.setState({ open: !this.state.open })}></img>
                 <div className={"profileMenu" + (this.state.open ? " open" : "")}>
-                    <a href="/dashboard"><i class="fas fa-comments"></i> Feed</a>
+                    <a href="/dashboard"><i className="fas fa-comments"></i> Feed</a>
                     <a href={`/profile/${this.props.user.handle}`}><i className="fas fa-user"></i> Profile</a>
                     <a href="/bugs"><i className="fas fa-bug"></i> Bugs</a>
                     <a href="https://discord.gg/NeqVuSy" target="__blank"><i className="fab fa-discord"></i> Discord</a>

@@ -24,8 +24,23 @@ const User = class User {
         this.avatar = 'avatar' in opts ? opts['avatar'] : null;
         // this.avatar = 'https://cdn.discordapp.com/avatars/205811939861856257/f4b880e557ae7c6e4442843ed21ecc12.png?size=2048';
 
-        this.followers = 'followers' in opts ? opts['followers'] : [];
-        this.following = 'following' in opts ? opts['following'] : [];
+        this.followers = 'followers' in opts ? opts['followers'].map(u => {
+            if (u === from.id) return from;
+
+            let data = GetUserById(u);
+            if (data === undefined) return
+            return new User(data, this);
+
+        }).filter(u => u !== null) : [];
+
+        this.following = 'following' in opts ? opts['following'].map(u => {
+            if (u === from.id) return from;
+
+            let data = GetUserById(u);
+            if (data === undefined) return null;
+            return new User(data, this);
+
+        }).filter(u => u !== null) : [];
 
         if (!this.username) throw new Error('No username provided.');
         if (!this.id) throw new Error('No id provided.')
@@ -39,7 +54,7 @@ const User = class User {
      * @returns {Object} Flattened object
      */
     serialize = () => {
-        return {
+        let seral =  {
 
             handle: this.handle,
             username: this.username,
@@ -49,10 +64,13 @@ const User = class User {
             avatar: this.avatar,
             token: this.token,
 
-            followers: this.followers,
-            following: this.following
+            followers: this.followers.map(f => f.id),
+            following: this.following.map(f => f.id)
 
         }
+
+        console.trace(seral);
+        return seral;
     }
 
     /**
