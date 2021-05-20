@@ -13,7 +13,7 @@ export default function Profile({ user, locations }) {
   return (
     <div className={"App" + (!tablet ? ' mobile' : '')}>
       {tablet ? <Sidebar locations={locations} user={user} tablet={tablet} /> : ''}
-      <ProfileFeed locations={locations} user={user} tablet={tablet} />
+      <ProfileFeed locations={locations} user={user} tablet={desktop} />
       {desktop ? <Actions locations={locations} user={user} /> : ''}
     </div>
   );
