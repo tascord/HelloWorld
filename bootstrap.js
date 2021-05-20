@@ -29,6 +29,8 @@ const start_brc = (port) => {
 
     app.get('*', (req, res) => {
 
+        if (!res.getHeader('Cache-Control')) res.setHeader('Cache-Control', 'public, max-age=259200');
+
         if (req.path.indexOf('.') == -1) res.sendFile(join(__dirname, 'build', 'index.html'))
         else {
 

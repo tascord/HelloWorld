@@ -4,7 +4,6 @@ const { readdirSync, existsSync, mkdirSync } = require('fs');
 const { join } = require('path');
 const { grey, cyanBright, redBright, whiteBright, greenBright } = require('chalk');
 
-
 /* Server setup */
 const app = require('express')();
 let locations = {};
@@ -29,6 +28,8 @@ readdirSync(join(__dirname, 'server', 'api', 'routes')).forEach(file => {
 
 /* Redirect GET Requests */
 app.get('*', (req, res) => {
+
+    if (!res.getHeader('Cache-Control')) res.setHeader('Cache-Control', 'public, max-age=36000');
 
     if (req.path === '/image') {
 

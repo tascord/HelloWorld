@@ -162,7 +162,7 @@ export default class Profile extends Component {
                         {
                             this.state.other !== false ?
                                 this.state.other.handle === this.user.handle ?
-                                    <button className="follow" onClick={() => this.setState({ editOpen: true })}><i className="fas fa-user-edit"></i><span>Edit Profile</span></button> : // Edit profile
+                                    <button className="follow" onClick={() => this.setState({ editOpen: true })}><i className="fas fa-user-edit"></i><span> Edit Profile</span></button> : // Edit profile
                                     this.state.following ?
                                         <button className="follow red" onClick={() => this.follow(true)}><i className="fas fa-user-minus"></i><span> Unfollow</span></button> : // Unfollow
                                         <button className="follow" onClick={() => this.follow()}><i className="fas fa-user-plus"></i><span> Follow</span></button> : // Follow
