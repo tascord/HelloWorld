@@ -229,6 +229,7 @@ body {
 }
 
 .content .profile .details .text {
+  max-width: 45%;
   margin-left: calc(5% + max(12.5vmin, 5rem) + 2.5%);
 }
 
@@ -237,17 +238,17 @@ body {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  max-width: 90%;
+  max-width: 100%;
 }
 
 .content .profile .details .text h3 {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  max-width: 90%;
   margin: 0 0 2ch;
   font-weight: lighter;
   color: #bbb;
+  max-width: 100%;
 }
 
 .content .profile .details .follow {
@@ -328,6 +329,7 @@ body {
 }
 
 .panel.profile-mini .name .text {
+  max-width: 70%;
   height: 20%;
   margin-left: 5%;
   display: -webkit-box;
@@ -350,13 +352,14 @@ body {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  max-width: 70%;
+  max-width: 100%;
 }
 
 .panel.profile-mini .name .text h3 {
   font-size: 2ch;
   color: #bbb;
   font-weight: 400;
+  max-width: 100%;
 }
 
 .panel.profile-mini .stats {
