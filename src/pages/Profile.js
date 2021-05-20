@@ -1,14 +1,38 @@
 import Sidebar from '../components/Sidebar';
 import Actions from '../components/Actions';
 import ProfileFeed from '../components/Profile';
+import React from 'react';
 
 export default function Profile({ user, locations }) {
 
-  const { outerWidth, outerHeight } = window;
+  const [dimensions, setDimensions] = React.useState({
+    height: window.innerHeight,
+    width: window.innerWidth
+  });
 
-  const desktop = (outerWidth / outerHeight) > 1.6;
-  const tablet = (outerWidth / outerHeight) > 1.1;
-  
+  React.useEffect(() => {
+
+    function handler() {
+
+      console.log(`Window resize [${window.innerWidth/window.innerHeight}]`);
+
+      setDimensions({
+        height: window.innerHeight,
+        width: window.innerWidth
+      })
+
+    }
+
+    window.addEventListener('resize', handler);
+    return _ => {
+      window.removeEventListener('resize', handler)
+    }
+
+  })
+
+  const desktop = (dimensions.width / dimensions.height) > 1.6;
+  const tablet = (dimensions.width / dimensions.height) > 1.1;
+
   return (
     <div className={"App" + (!tablet ? ' mobile' : '')}>
       {tablet ? <Sidebar locations={locations} user={user} tablet={tablet} /> : ''}
