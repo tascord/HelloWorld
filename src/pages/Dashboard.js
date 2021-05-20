@@ -1,14 +1,13 @@
-import { useMediaQuery } from 'react-responsive';
-
 import Sidebar from '../components/Sidebar';
 import Actions from '../components/Actions';
 import Feed from '../components/Feed';
 
 export default function Dashboard({ user, locations }) {
 
-  const desktop = useMediaQuery({ minWidth: 1100 });
-  const tablet = useMediaQuery({ minWidth: 900 });
-  // const phone = useMediaQuery({ minWidth: 800 });
+  const { outerWidth, outerHeight } = window;
+
+  const desktop = (outerWidth / outerHeight) > 1.6;
+  const tablet = (outerWidth / outerHeight) > 1.1;
   
   return (
     <div className={"App" + (!tablet ? ' mobile' : '')}>
