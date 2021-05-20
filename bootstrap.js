@@ -26,6 +26,7 @@ const start_brc = (port) => {
 
     const app = require('express')();
     app.listen(port, () => console.log(grey('(') + cyanBright('BRC') + grey(') ') + greenBright('BRC started @ ') + cyanBright(locations.site) + grey(` [${port}]`)));
+    app.use(require('body-parser').json());
 
     app.get('*', (req, res) => {
 
@@ -47,6 +48,11 @@ const start_brc = (port) => {
 
         }
 
+    });
+
+    app.post('/update', (req, res) => {
+        console.log(grey('(') + cyanBright('BRC') + grey(') ') + greenBright('Update request ') + whiteBright(req.path + ' ') + grey(req.body));
+        res.status(200).end();
     })
 
 }
