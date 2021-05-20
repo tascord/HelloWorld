@@ -19,7 +19,7 @@ module.exports = function GetSelf(i, o) {
     user = new User(user);
     target = new User(target);
 
-    user.following.push(target);
+    user.following.push(target.id);
     target.followers.push(user.id);
 
     user.save();
