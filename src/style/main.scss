@@ -60,6 +60,11 @@ body {
 
     &.mobile .content {
         width: 95%;
+        .profile .details button {
+            span {
+                display: none;
+            }
+        }
     }
 }
 
@@ -163,9 +168,15 @@ body {
     padding: 0 2.5%;
 
     .header {
+
         display: flex;
         justify-content: center;
         align-items: center;
+
+        .avatarMini {
+            margin: 0 0 0 2.5%;
+        }
+
     }
 
     .profile {
@@ -185,8 +196,8 @@ body {
             position: relative;
 
             .avatar {
-                width: 100px;
-                height: 100px;
+                width: calc(max(12.5vmin, 5rem));
+                height: calc(max(12.5vmin, 5rem));
                 position: absolute;
                 top: -25%;
                 left: 5%;
@@ -195,13 +206,15 @@ body {
             }
 
             .text {
-                margin-left: calc(5% + 100px + 2.5%);
+                margin-left: calc(5% + max(12.5vmin, 5rem) + 2.5%);
 
                 h2 {
                     margin: 1ch 0 0;
+                    text-overflow: ellipsis;
                 }
 
                 h3 {
+                    text-overflow: ellipsis;
                     margin: 0 0 2ch;
                     font-weight: lighter;
                     color: #bbb;
@@ -229,15 +242,6 @@ body {
         justify-content: flex-end;
         align-items: center;
         position: relative;
-
-        img {
-            width: 50px;
-            height: 50px;
-            border-radius: 100px;
-            cursor: pointer;
-            z-index: 10;
-            border: 2px solid var(--white);
-        }
     }
 
     .panel {
@@ -522,7 +526,6 @@ button,
                 &.invalid {
                     color: var(--red-15);
                 }
-
             }
 
             .error {
@@ -548,7 +551,7 @@ button,
     width: 100%;
     height: 100%;
     position: relative;
-    
+
     img {
         width: 100px;
         height: 100px;
@@ -576,61 +579,75 @@ button,
             opacity: 0.25;
         }
     }
-
 }
 
-.profileMenu {
+.avatarMini {
 
-    border: 2px solid var(--white);
-    display: none;
-    width: 20ch;
-    position: absolute;
-    top: 48%;
-    left: calc(100% - 18ch);
-    background-color: var(--darker);
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    border-radius: 15px;
-    padding: 2ch 1ch;
+    position: relative;
+    width: 50px;
+    height: 50px;
 
-    &.open {
-        display: flex;
+    img {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        border-radius: 100px;
+        cursor: pointer;
+        z-index: 15;
+        border: 2px solid var(--white);
     }
 
-    a {
-        display: flex;
+    .profileMenu {
+        z-index: 10;
+        border: 2px solid var(--white);
+        display: none;
+        width: 20ch;
+        position: absolute;
+        top: 48%;
+        left: calc(100% - 18ch);
+        background-color: var(--darker);
+        justify-content: center;
         align-items: center;
-        justify-content: flex-start;
-        flex-direction: row;
-        
-        border-radius: 5px;
-        padding: 2.5% 5%;
-        width: 100%;
-        height: 3ch;
-        font-size: 110%;
-        margin-bottom: 1ch;
-        color: var(--white);
-        font-weight: lighter;
+        flex-direction: column;
+        border-radius: 15px;
+        padding: 2ch 1ch;
 
-        i {
-            width: 1ch;
-            margin-right: 0.75ch;
+        &.open {
+            display: flex;
         }
 
-        transition: color 0.15s ease-in-out, background 0.15s ease-in-out;
-        &:hover {
-            background-color: var(--dark);
-            color: var(--light);
+        a {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            flex-direction: row;
+
+            border-radius: 5px;
+            padding: 2.5% 5%;
+            width: 100%;
+            height: 3ch;
+            font-size: 110%;
+            margin-bottom: 1ch;
+            color: var(--white);
+            font-weight: lighter;
+
+            i {
+                width: 1ch;
+                margin-right: 0.75ch;
+            }
+
+            transition: color 0.15s ease-in-out, background 0.15s ease-in-out;
+            &:hover {
+                background-color: var(--dark);
+                color: var(--light);
+            }
         }
 
+        button:hover {
+            color: var(--red-15);
+            border-color: var(--red-15);
+        }
     }
-
-    button:hover {
-        color: var(--red-15);
-        border-color: var(--red-15);
-    }
-
 }
 
 // Animations

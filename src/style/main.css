@@ -60,6 +60,10 @@ body {
   width: 95%;
 }
 
+.App.mobile .content .profile .details button span {
+  display: none;
+}
+
 .pane {
   width: 20vw;
   min-height: 100vh;
@@ -184,6 +188,10 @@ body {
           align-items: center;
 }
 
+.content .header .avatarMini {
+  margin: 0 0 0 2.5%;
+}
+
 .content .profile .banner {
   height: 150px;
   background-image: url(https://source.unsplash.com/1920x1080/?aesthetic);
@@ -211,8 +219,8 @@ body {
 }
 
 .content .profile .details .avatar {
-  width: 100px;
-  height: 100px;
+  width: calc(max(12.5vmin, 5rem));
+  height: calc(max(12.5vmin, 5rem));
   position: absolute;
   top: -25%;
   left: 5%;
@@ -221,14 +229,16 @@ body {
 }
 
 .content .profile .details .text {
-  margin-left: calc(5% + 100px + 2.5%);
+  margin-left: calc(5% + max(12.5vmin, 5rem) + 2.5%);
 }
 
 .content .profile .details .text h2 {
   margin: 1ch 0 0;
+  text-overflow: ellipsis;
 }
 
 .content .profile .details .text h3 {
+  text-overflow: ellipsis;
   margin: 0 0 2ch;
   font-weight: lighter;
   color: #bbb;
@@ -251,15 +261,6 @@ body {
       -ms-flex-align: center;
           align-items: center;
   position: relative;
-}
-
-.actions .header img {
-  width: 50px;
-  height: 50px;
-  border-radius: 100px;
-  cursor: pointer;
-  z-index: 10;
-  border: 2px solid var(--white);
 }
 
 .actions .panel {
@@ -686,7 +687,24 @@ button:hover,
   opacity: 0.25;
 }
 
-.profileMenu {
+.avatarMini {
+  position: relative;
+  width: 50px;
+  height: 50px;
+}
+
+.avatarMini img {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 100px;
+  cursor: pointer;
+  z-index: 15;
+  border: 2px solid var(--white);
+}
+
+.avatarMini .profileMenu {
+  z-index: 10;
   border: 2px solid var(--white);
   display: none;
   width: 20ch;
@@ -708,13 +726,13 @@ button:hover,
   padding: 2ch 1ch;
 }
 
-.profileMenu.open {
+.avatarMini .profileMenu.open {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
 }
 
-.profileMenu a {
+.avatarMini .profileMenu a {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -740,17 +758,17 @@ button:hover,
   transition: color 0.15s ease-in-out, background 0.15s ease-in-out;
 }
 
-.profileMenu a i {
+.avatarMini .profileMenu a i {
   width: 1ch;
   margin-right: 0.75ch;
 }
 
-.profileMenu a:hover {
+.avatarMini .profileMenu a:hover {
   background-color: var(--dark);
   color: var(--light);
 }
 
-.profileMenu button:hover {
+.avatarMini .profileMenu button:hover {
   color: var(--red-15);
   border-color: var(--red-15);
 }

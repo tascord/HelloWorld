@@ -22,6 +22,8 @@ const start_api = (port) => {
 // Start the react server
 const start_brc = (port) => {
 
+    if(!existsSync(join(__dirname, 'build'))) return console.log(grey('(') + cyanBright('BRC') + grey(') ') + greenBright('BRC started via react-scripts'));
+
     const app = require('express')();
     app.listen(port, () => console.log(grey('(') + cyanBright('BRC') + grey(') ') + greenBright('BRC started @ ') + cyanBright(locations.site) + grey(` [${port}]`)));
 

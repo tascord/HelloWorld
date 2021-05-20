@@ -11,9 +11,9 @@ export default function Profile({ user, locations }) {
   // const phone = useMediaQuery({ minWidth: 800 });
   
   return (
-    <div className="App">
+    <div className={"App" + (!tablet ? ' mobile' : '')}>
       {tablet ? <Sidebar locations={locations} user={user} tablet={tablet} /> : ''}
-      <ProfileFeed locations={locations} user={user} />
+      <ProfileFeed locations={locations} user={user} tablet={tablet} />
       {desktop ? <Actions locations={locations} user={user} /> : ''}
     </div>
   );

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Request from '../helpers/Request';
+import AvatarMenu from "./AvatarMenu";
 import SearchWindow from "./SearchWindow";
 
 export default class Profile extends Component {
@@ -119,6 +120,7 @@ export default class Profile extends Component {
 
                 <div className="header">
                     <SearchWindow user={this.props.user} locations={this.props.locations} />
+                    {!this.props.tablet ? <AvatarMenu user={this.props.user} /> : ''}
                 </div>
 
                 <div className={"edit" + (this.state.editOpen ? " open" : "")} onClick={this.exitEdits}>
@@ -160,10 +162,10 @@ export default class Profile extends Component {
                         {
                             this.state.other !== false ?
                                 this.state.other.handle === this.user.handle ?
-                                    <button className="follow" onClick={() => this.setState({ editOpen: true })}><i className="fas fa-user-edit"></i> Edit Profile</button> : // Edit profile
+                                    <button className="follow" onClick={() => this.setState({ editOpen: true })}><i className="fas fa-user-edit"></i><span>Edit Profile</span></button> : // Edit profile
                                     this.state.following ?
-                                        <button className="follow red" onClick={() => this.follow(true)}><i className="fas fa-user-minus"></i> Unfollow</button> : // Unfollow
-                                        <button className="follow" onClick={() => this.follow()}><i className="fas fa-user-plus"></i> Follow</button> : // Follow
+                                        <button className="follow red" onClick={() => this.follow(true)}><i className="fas fa-user-minus"></i><span> Unfollow</span></button> : // Unfollow
+                                        <button className="follow" onClick={() => this.follow()}><i className="fas fa-user-plus"></i><span> Follow</span></button> : // Follow
                                 ''
                         }
 

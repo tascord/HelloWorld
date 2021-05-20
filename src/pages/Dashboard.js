@@ -13,7 +13,7 @@ export default function Dashboard({ user, locations }) {
   return (
     <div className={"App" + (!tablet ? ' mobile' : '')}>
       {tablet ? <Sidebar locations={locations} user={user} tablet={tablet} /> : ''}
-      <Feed locations={locations} user={user} />
+      <Feed locations={locations} user={user} tablet={tablet} />
       {desktop ? <Actions locations={locations} user={user} /> : ''}
     </div>
   );
