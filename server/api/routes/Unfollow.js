@@ -19,8 +19,8 @@ module.exports = function GetSelf(i, o) {
     user = new User(user);
     target = new User(target);
 
-    user.following = user.following.filter(f => f.id !== target.id);
-    target.followers = target.followers.filter(f => f.id !== user.id);
+    user.following = user.following.filter(f => f !== target.id);
+    target.followers = target.followers.filter(f => f !== user.id);
 
     user.save();
     target.save();
