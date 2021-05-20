@@ -13,11 +13,11 @@ const login_urls = [
 ]
 
 const locations = {
-    self: 'http://localhost:3000',
-    api: 'http://localhost:3001',
+    // self: 'http://localhost:3000',
+    // api: 'http://localhost:3001',
 
-    // self: 'https://bedroom.community',
-    // api: 'https://api.bedroom.community'
+    self: 'https://bedroom.community',
+    api: 'https://api.bedroom.community'
 }
 
 function setToken(token) {
