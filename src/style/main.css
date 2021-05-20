@@ -235,10 +235,16 @@ body {
 .content .profile .details .text h2 {
   margin: 1ch 0 0;
   text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 90%;
 }
 
 .content .profile .details .text h3 {
   text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 90%;
   margin: 0 0 2ch;
   font-weight: lighter;
   color: #bbb;
@@ -339,12 +345,15 @@ body {
           flex-direction: column;
 }
 
-.panel.profile-mini .name .text h2 {
+.panel.profile-mini .name .text h2, .panel.profile-mini .name .text h3 {
   margin: 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 70%;
 }
 
 .panel.profile-mini .name .text h3 {
-  margin: 0;
   font-size: 2ch;
   color: #bbb;
   font-weight: 400;
@@ -410,6 +419,13 @@ body {
           align-items: center;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
+}
+
+.panel.heya h2 {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 100%;
 }
 
 a {

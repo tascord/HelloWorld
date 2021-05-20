@@ -211,10 +211,16 @@ body {
                 h2 {
                     margin: 1ch 0 0;
                     text-overflow: ellipsis;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    max-width: 90%;
                 }
 
                 h3 {
                     text-overflow: ellipsis;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    max-width: 90%;
                     margin: 0 0 2ch;
                     font-weight: lighter;
                     color: #bbb;
@@ -292,12 +298,15 @@ body {
                 justify-content: center;
                 flex-direction: column;
 
-                h2 {
+                h2,h3 {
                     margin: 0;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    max-width: 70%;
                 }
 
                 h3 {
-                    margin: 0;
                     font-size: 2ch;
                     color: #bbb;
                     font-weight: 400;
@@ -346,6 +355,14 @@ body {
             align-items: center;
             flex-wrap: wrap;
         }
+
+        h2 {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            max-width: 100%;
+        }
+
     }
 }
 
