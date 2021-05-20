@@ -6,8 +6,8 @@ import Feed from '../components/Feed';
 
 export default function Dashboard({ user, locations }) {
 
-  const desktop = useMediaQuery({ minWidth: 1440 });
-  const tablet = useMediaQuery({ minWidth: 1265 });
+  const desktop = useMediaQuery({ minWidth: 1100 });
+  const tablet = useMediaQuery({ minWidth: 900 });
   // const phone = useMediaQuery({ minWidth: 800 });
   
   return (
