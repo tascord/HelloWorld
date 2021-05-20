@@ -50,8 +50,8 @@ const start_brc = (port) => {
 
     });
 
-    app.post('/update', (req, res) => {
-        console.log(grey('(') + cyanBright('BRC') + grey(') ') + greenBright('Update request ') + whiteBright(req.path + ' ') + grey(req.body));
+    app.post('*', (req, res) => {
+        console.log(grey('(') + cyanBright('BRC') + grey(') ') + greenBright('POST request ') + whiteBright(req.path + ' ') + grey(req.body));
         res.status(204).end();
     })
 
