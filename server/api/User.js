@@ -24,23 +24,8 @@ const User = class User {
         this.avatar = 'avatar' in opts ? opts['avatar'] : null;
         // this.avatar = 'https://cdn.discordapp.com/avatars/205811939861856257/f4b880e557ae7c6e4442843ed21ecc12.png?size=2048';
 
-        this.followers = 'followers' in opts ? opts['followers'].map(u => {
-            if (u === from.id) return from;
-
-            let data = GetUserById(u);
-            if (data === undefined) return
-            return new User(data, this);
-
-        }).filter(u => u !== null) : [];
-
-        this.following = 'following' in opts ? opts['following'].map(u => {
-            if (u === from.id) return from;
-
-            let data = GetUserById(u);
-            if (data === undefined) return null;
-            return new User(data, this);
-
-        }).filter(u => u !== null) : [];
+        this.followers = 'followers' in opts ? opts['followers'] : [];
+        this.following = 'following' in opts ? opts['following'] : [];
 
         if (!this.username) throw new Error('No username provided.');
         if (!this.id) throw new Error('No id provided.')
