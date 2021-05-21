@@ -77,6 +77,7 @@ else {
         new HTTPS('/etc/letsencrypt/live/bedroom.community/fullchain.pem', '/etc/letsencrypt/live/bedroom.community/privkey.pem', true), // Protocol
         'bedroom.community', // External URL
         true, // Force creation
+        join(__dirname, 'update.sh')
     );
 
     const api = new WebImplementation(
@@ -84,6 +85,7 @@ else {
         new HTTPS('/etc/letsencrypt/live/api.bedroom.community/fullchain.pem', '/etc/letsencrypt/live/api.bedroom.community/privkey.pem', true), // Protocol
         'api.bedroom.community', // External URL
         true, // Force creation
+        join(__dirname, 'update.sh')
     );
 
     brc.on('ready', () => start_brc(brc.port));

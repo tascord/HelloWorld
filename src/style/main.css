@@ -137,10 +137,10 @@ body {
 }
 
 .sidebar .following .user img {
-  width: 15%;
-  height: 15%;
-  min-width: 15%;
-  max-height: 15%;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  max-height: 40px;
   border-radius: 100px;
 }
 

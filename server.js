@@ -11,6 +11,9 @@ let locations = {};
 /* Incoming requests */
 app.use(require('body-parser').json());
 
+/* WebRTC */
+
+
 /* Incoming Files */
 if (!existsSync(join(__dirname, 'server', 'media'))) require('fs').mkdirSync(join(__dirname, 'server', 'media'));
 const multiparty = require('connect-multiparty')({ uploadDir: join(__dirname, 'server', 'media'), maxFilesSize: 2400000, autoFiles: true });
