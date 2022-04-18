@@ -1,1 +1,0 @@
-window.__remixManifest={"version":"78dbff39","entry":{"module":"/build/entry.client-BAQMOIRX.js","imports":["/build/_shared/chunk-C4L54Z4U.js"]},"routes":{"root":{"id":"root","path":"","module":"/build/root-NTZJW35I.js","hasAction":false,"hasLoader":false,"hasCatchBoundary":false,"hasErrorBoundary":false}},"url":"/build/manifest-78DBFF39.js"};
