@@ -1,7 +1,7 @@
 import User from "./User";
 
 type Response = Promise<{ [key: string]: any }>;
-type Method = 'post' | 'get' | 'put' | 'delete' | 'patch';
+export type Method = 'post' | 'get' | 'put' | 'delete' | 'patch';
 
 export default class RestObject {
 

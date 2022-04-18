@@ -1,4 +1,4 @@
-import Community from "server/Community";
+import Community from "../Community";
 import RestObject from "../Object";
 
 export const Object = new RestObject('community/:id', ['patch', 'put']);

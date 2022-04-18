@@ -1,6 +1,7 @@
 import { createHash } from "crypto";
 import { Tables } from "./Data";
 import Message from "./Message";
+import Signer from "./Signer";
 
 export default class User {
     readonly id: string;
@@ -63,6 +64,18 @@ export default class User {
         throw new Error(`Invalid identifier '${identifier}'`);
     }
 
+    static from_token(token: string) {
+        if(!Signer.verify(token)) throw new Error('Unable to verify token');
+        
+        const data = Signer.decode(token)?.payload as any;
+        if(!data) throw new Error('Unable to decode token');
+
+        const user = User.from_id(data.id);
+        if(!user.password_matches(data.password) || !user.email_matches(data.email)) throw new Error('Invalid token');
+
+        return user;
+    }
+
     /* ------------------------------------------------- */
 
     to_public() {
@@ -80,6 +93,14 @@ export default class User {
             location: this._location,
             website: this._website,
             pronouns: this._pronouns,
+        }
+    }
+
+    to_token() {
+        return {
+            id: this.id,
+            email: this._email,
+            password: this._password,
         }
     }
 
@@ -145,6 +166,10 @@ export default class User {
 
     public password_matches(password: string) {
         return createHash('sha256').update(password).digest('hex') === this._password;
+    }
+
+    public email_matches(email: string) {
+        return this._email === email;
     }
 
     /* ------------------------------------------------- */

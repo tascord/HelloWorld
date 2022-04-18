@@ -42,3 +42,17 @@ Object.put = (_user, data) => new Promise((resolve) => {
 
     resolve(User.create(username, email, password).to_public());
 });
+
+// Login
+Object.post = (_user, data) => new Promise((resolve) => {
+    const { username, password } = data;
+
+    if (!username) throw new Error('Username is required');
+    if (!password) throw new Error('Password is required');
+
+    const user = User.from_username(username);
+    if (!user.password_matches(password)) throw new Error('Invalid password');
+
+    resolve(user.to_token());
+
+})

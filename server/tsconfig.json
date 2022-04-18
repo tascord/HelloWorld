@@ -1,0 +1,19 @@
+{
+    "exclude": [
+      "dist/",
+    ],
+    "compilerOptions": {
+      "resolveJsonModule": true,
+      "target": "es5",
+      "module": "commonjs",
+      "sourceMap": true,
+      "rootDir": ".",
+      "outDir": "dist",
+      "downlevelIteration": true,
+      "strict": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true,
+      "declaration": true
+    }
+  }

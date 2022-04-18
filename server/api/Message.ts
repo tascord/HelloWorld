@@ -1,5 +1,5 @@
 import Community from "./Community";
-import { Tables } from "./Data";
+import { Tables } from "../api/Data";
 import User from "./User";
 
 export default class Message {
