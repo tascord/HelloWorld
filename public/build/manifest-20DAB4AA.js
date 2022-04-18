@@ -1,0 +1,1 @@
+window.__remixManifest={"version":"20dab4aa","entry":{"module":"/build/entry.client-VX2I3552.js","imports":["/build/_shared/chunk-6BO74FWO.js"]},"routes":{"root":{"id":"root","path":"","module":"/build/root-BCAGOEDI.js","hasAction":false,"hasLoader":false,"hasCatchBoundary":false,"hasErrorBoundary":false}},"url":"/build/manifest-20DAB4AA.js"};

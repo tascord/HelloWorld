@@ -1,3 +1,4 @@
+import Community from "./Community";
 import User from "./User";
 
 export const Roles = [
@@ -35,15 +36,17 @@ export const Actions = [
     // Excludes non-members and restricted members.
     'community_delete',
 
-    /* Moderation Permissions */
+    /* Helper Permissions */
 
     // Delete messages in community.
     // Requires 'helper' or higher role.
-    'community_moderator_delete',
+    'community_helper_delete',
 
     // Lock comments to a post in community.
     // Requires 'helper' or higher role.
-    'community_moderator_lock',
+    'community_helper_lock',
+
+    /* Moderator Permissions */
 
     // Restrict posting to community.
     // Requires 'moderator' or higher role.
@@ -61,19 +64,31 @@ export const Actions = [
 
     // Promote user to moderator.
     // Requires 'lead' or higher role.
-    'community_moderator_promote_user',
+    'community_lead_promote_user',
 
     // Promote helper to moderator.
     // Requires 'lead' or higher role.
-    'community_moderator_promote_helper',
+    'community_lead_promote_helper',
 
     // Demote user to helper.
     // Requires 'lead' or higher role.
-    'community_moderator_demote_moderator',
+    'community_lead_demote_moderator',
 
     // Demote helper to user.
     // Requires 'lead' or higher role.
-    'community_moderator_demote_helper',
+    'community_lead_demote_helper',
+
+    // Rename community.
+    // Requires 'lead' or higher role.
+    'community_lead_rename',
+
+    // Change community description.
+    // Requires 'lead' or higher role.
+    'community_lead_description',
+
+    // Change community owner.
+    // Requires 'lead' or higher role.
+    'community_lead_transfer',
 
 
 ] as const;
@@ -102,6 +117,10 @@ export function ConstructPermissions(actions: Action[], initial?: number): numbe
     return actions.reduce((permission, action) => AddPermission(permission, action), initial ?? 0);
 }
 
+export function UserHasPermissionInCommunity(user: User, community: Community, action: Action): boolean {
+    return HasPermission(user.permissions[community.id] ?? DefaultPermissions.user, action);
+}
+
 // Default Permissions
 export const DefaultPermissions: { [key in typeof Roles[number]]: number } = {
 
@@ -115,21 +134,52 @@ export const DefaultPermissions: { [key in typeof Roles[number]]: number } = {
     ]),
 
     'helper': ConstructPermissions([
-        'community_moderator_delete',
-        'community_moderator_lock',
+        'community_read',
+        'community_post',
+        'community_like',
+        'community_reshare',
+        'community_comment',
+        'community_delete',
+
+        'community_helper_delete',
+        'community_helper_lock',
     ]),
 
     'moderator': ConstructPermissions([
+        'community_read',
+        'community_post',
+        'community_like',
+        'community_reshare',
+        'community_comment',
+        'community_delete',
+        'community_helper_delete',
+        'community_helper_lock',
+
         'community_moderator_restrict',
         'community_moderator_unrestrict',
         'community_moderator_pin',
     ]),
 
     'lead': ConstructPermissions([
-        'community_moderator_promote_user',
-        'community_moderator_promote_helper',
-        'community_moderator_demote_moderator',
-        'community_moderator_demote_helper',
+        'community_read',
+        'community_post',
+        'community_like',
+        'community_reshare',
+        'community_comment',
+        'community_delete',
+        'community_helper_delete',
+        'community_helper_lock',
+        'community_moderator_restrict',
+        'community_moderator_unrestrict',
+        'community_moderator_pin',
+
+        'community_lead_promote_user',
+        'community_lead_promote_helper',
+        'community_lead_demote_moderator',
+        'community_lead_demote_helper',
+        'community_lead_rename',
+        'community_lead_description',
+        'community_lead_transfer',
     ])
 
 }

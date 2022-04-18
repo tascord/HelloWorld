@@ -31,7 +31,7 @@ export default class User {
         this._created = new Date(data.created ?? Date.now());
         this._mfa = data.mfa ?? undefined;
         this._email_verified = data.email_verified ?? false;
-        this._messages = (data.messages ?? []).map((m: any) => new Message(m));
+        this._messages = (data.messages ?? []).map((m: string) => Message.from_id(m));
         this._avatar = data.avatar ?? 'default';
         this._bio = data.bio ?? '';
         this._location = data.location ?? '';
@@ -74,7 +74,7 @@ export default class User {
             permissions: this.permissions,
             created: this.created,
             email_verified: this.email_verified,
-            messages: this._messages.map((m: Message) => m.id),
+            messages: this._messages.map(m => m.id),
             avatar: this._avatar,
             bio: this._bio,
             location: this._location,
@@ -109,10 +109,29 @@ export default class User {
     /* ------------------------------------------------- */
 
     static create(username: string, email: string, password: string) {
-        return new User({
-            id: this.generate_id(),
-            username, email, password,
+
+        const id = this.generate_id();
+
+        const user = new User({
+            id, username: '', email: '', password: '',
         })
+
+        try {
+            user.username = username;
+            user.email = email;
+            user.password = password;
+            user.display_name = username;
+        }
+
+        catch (e) {
+            if (Tables.Username_ID_Map.get(username) === id) Tables.Username_ID_Map.delete(username);
+            Tables.Users.delete(user.id);
+
+            throw e;
+        }
+
+        return user;
+
     }
 
     private static generate_id() {

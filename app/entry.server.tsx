@@ -1,6 +1,7 @@
-import ReactDOMServer from "react-dom/server";
-import { RemixServer as Remix } from "@remix-run/react";
-import type { EntryContext } from "@remix-run/node";
+import { renderToString } from 'react-dom/server';
+import { RemixServer } from '@remix-run/react';
+import type { EntryContext } from '@remix-run/node';
+import { injectStylesIntoStaticMarkup } from '@mantine/ssr';
 
 export default function handleRequest(
   request: Request,
@@ -8,15 +9,11 @@ export default function handleRequest(
   responseHeaders: Headers,
   remixContext: EntryContext
 ) {
-  let markup = ReactDOMServer.renderToString(
-    <Remix context={remixContext} url={request.url} />
-  );
+  const markup = renderToString(<RemixServer context={remixContext} url={request.url} />);
+  responseHeaders.set('Content-Type', 'text/html');
 
-  return new Response("<!DOCTYPE html>" + markup, {
+  return new Response(`<!DOCTYPE html>${injectStylesIntoStaticMarkup(markup)}`, {
     status: responseStatusCode,
-    headers: {
-      ...Object.fromEntries(responseHeaders),
-      "Content-Type": "text/html"
-    }
+    headers: responseHeaders,
   });
 }
