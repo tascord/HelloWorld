@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["browser-route-module:/Users/float/Documents/Projects/bedroom.community/app/root.tsx?browser", "../../app/root.tsx"],
+  "sourcesContent": ["export { default } from \"/Users/float/Documents/Projects/bedroom.community/app/root.tsx\";", "export default function App(): JSX.Element {\n  return (\n    <h1>Real?</h1>\n  )\n}"],
+  "mappings": ";;;;;;AAAA;;;ACAA;AAAe,eAA4B;AACzC,SACE,oCAAC,MAAD,MAAI;AAAA;",
+  "names": []
+}
