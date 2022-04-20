@@ -5,7 +5,7 @@ const TableNames = [
     'Users', 'Username_ID_Map', 'Messages', 'Communities'
 ] as const;
 
-const DB = new Hasty(join(__dirname, '../brc.db'));
+const DB = new Hasty(join(__dirname, '../../brc.db'));
 export const Tables: { [key in typeof TableNames[number]]: Hastyable } = {
     Users: DB.Table('users'),
     Username_ID_Map: DB.Table('username_id_map'),

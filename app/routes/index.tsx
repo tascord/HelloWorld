@@ -1,15 +1,202 @@
-import { Avatar, Box, Group, Navbar, ScrollArea, UnstyledButton, Text, useMantineTheme, ActionIcon, useMantineColorScheme } from "@mantine/core";
-import { LinksFunction } from "remix";
+import React from "react";
+import { Avatar, Box, Group, Navbar, ScrollArea, UnstyledButton, Text, useMantineTheme, ActionIcon, useMantineColorScheme, SimpleGrid, TextInput, Button, TextProps } from "@mantine/core";
+import { ActionFunction, Form, Link, LoaderFunction, redirect, useActionData, useLoaderData } from "remix";
 import { ChevronRight, ChevronLeft, MoonStars, Sun } from "tabler-icons-react";
+import { format_media } from "~/utils/Server";
+import { commitSession, getSession } from "~/utils/Session";
+import { api_request } from "~/utils/Server";
+import type { User } from "~/utils/Types";
 
-import Styles from '~/style.css';
+export const loader: LoaderFunction = ({ request }) => new Promise(async resolve => {
+    const session = await getSession(request.headers.get("Cookie"));
+    if (!session.has('token')) {
+        console.log(session.data)
+        console.log('No token lol')
+        return resolve(null);
+    }
 
-export const links: LinksFunction = () => [
-    { rel: 'stylesheet', href: Styles }
-]
+    api_request<User>('/me', 'get', undefined)
+        .then(resolve)
+        .catch(async () => {
+            console.log('Unsetting token');
+            session.unset('token');
+            resolve(redirect('/', {
+                headers: {
+                    'Set-Cookie': await commitSession(session)
+                }
+            }));
+        })
+
+})
+
+export const action: ActionFunction = ({ request }) => new Promise(async resolve => {
+    const data = await request.formData();
+    const session = await getSession(request.headers.get("Cookie"));
+
+    const email = data.get('email');
+    const username = data.get('username');
+    const password = data.get('password');
+
+    api_request<{ token: string }>('user', email ? 'put' : 'post', { email: email?.toString(), username: username?.toString(), password: password?.toString() })
+        .then(async ({ token }) => {
+            session.set('token', token);
+            console.log(session.data);
+            resolve(redirect('/', {
+                headers: {
+                    'Set-Cookie': await commitSession(session)
+                }
+            }));
+        })
+        .catch(error => {
+            resolve({ error })
+        })
+
+})
 
 export default function () {
 
+    const user_data = useLoaderData<User | undefined>();
+    if (!user_data) return Splash();
+    return Timeline(user_data);
+
+}
+
+export function ThemeSwitcher({ }): JSX.Element {
+    const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+    const theme = useMantineColorScheme();
+
+    return (
+        <ActionIcon
+            variant="light"
+            color={theme.colorScheme === 'dark' ? 'yellow' : 'grape'}
+            onClick={() => toggleColorScheme()}
+            size={30}>
+            {colorScheme === 'dark' ? <Sun size={16} /> : <MoonStars size={16} />}
+        </ActionIcon>
+    )
+}
+
+export function ThemedText(props: { lightness?: number, children: string | JSX.Element | Array<string | JSX.Element> } & TextProps<'div'>) {
+    return (
+        <Text sx={(t) => ({ color: t.colorScheme === 'dark' ? t.colors.gray[t.colors.gray.length - (props.lightness ?? 4)] : t.colors.dark[(props.lightness ?? 4)] })} {...props}>
+            {props.children}
+        </Text>
+    )
+}
+
+function Splash(): JSX.Element {
+
+    const [registering, setRegistering] = React.useState(false);
+    const { error }: { error?: string } = (useActionData() ?? {});
+
+    return (
+        <>
+            <Group
+                direction="row"
+                position="apart"
+                px="md"
+                py="sm">
+                <Text
+                    color="grape"
+                    weight={700}
+                    variant="gradient"
+                    component={Link}
+                    to="/"
+                    gradient={{ from: '#FCB0B3', to: '#7EB2DD', deg: 0 }}
+                    sx={{ fontSize: '1.5rem' }}>
+                    bedroom
+                </Text>
+                <ThemeSwitcher />
+            </Group>
+            <SimpleGrid
+                cols={2}
+                style={{
+                    height: '100%',
+                }}>
+                <Group
+                    direction="column"
+                    position="right">
+                    <Text
+                        color="grape"
+                        weight={700}
+                        variant="gradient"
+                        align="right"
+                        gradient={{ from: '#FCB0B3', to: '#7EB2DD', deg: 0 }}
+                        sx={{ fontSize: '3.5rem' }}>
+                        bedroom community
+                    </Text>
+
+                    <ThemedText
+                        align="right"
+                        style={{
+                            fontSize: '2.25rem',
+                            maxWidth: 'min(35vw, 40rem)',
+                        }}>
+                        Find your sub-sub-genre of the internet filled with fellow folk that find familiar frills fascinating.
+                    </ThemedText>
+
+                </Group>
+                <Group>
+                    <Form
+                        method="post"
+                        style={{
+                            width: '100%',
+                            maxWidth: '40rem'
+                        }}>
+                        <Box px="xl">
+                            <Text color="red">{error}</Text>
+                            <TextInput
+                                name="username"
+                                placeholder="Username"
+                                label="Username"
+                                description="Your account handle"
+                                mt="sm"
+                                required
+                            />
+                            {registering && <TextInput
+                                name="email"
+                                type="email"
+                                placeholder="Email Address"
+                                label="Email"
+                                description="The email address that will be tied to your account"
+                                mt="sm"
+                                required
+                            />}
+                            <TextInput
+                                name="password"
+                                type="password"
+                                placeholder="Password"
+                                label="Password"
+                                description="Your accounts password"
+                                mt="sm"
+                                required
+                            />
+                            <Group
+                                mt="md"
+                                position="right"
+                                style={{ flexDirection: 'row-reverse' }}>
+                                <Button
+                                    type="submit"
+                                    variant="light"
+                                    color="pink">
+                                    {registering ? 'Register' : 'Login'}
+                                </Button>
+                                <Button
+                                    variant="light"
+                                    color="yellow"
+                                    onClick={() => setRegistering(!registering)}>
+                                    {registering ? 'Login' : 'Register'} Instead
+                                </Button>
+                            </Group>
+                        </Box>
+                    </Form>
+                </Group>
+            </SimpleGrid>
+        </>
+    )
+}
+
+function Timeline(user: User) {
     const theme = useMantineTheme();
     const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 
@@ -36,15 +223,15 @@ export default function () {
             >
                 <Group>
                     <Avatar
-                        src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=255&q=80"
+                        src={format_media(user.avatar)}
                         radius="xl"
                     />
                     <Box sx={{ flex: 1 }}>
                         <Text size="sm" weight={500}>
-                            Amy Horsefighter
+                            {user.display_name}
                         </Text>
                         <Text color="dimmed" size="xs">
-                            ahorsefighter@gmail.com
+                            @{user.username}
                         </Text>
                     </Box>
 
@@ -59,7 +246,7 @@ export default function () {
             sx={(theme) => ({
                 paddingLeft: theme.spacing.xs,
                 paddingRight: theme.spacing.xs,
-                paddingBottom: theme.spacing.lg,
+                paddingBottom: theme.spacing.sm,
                 borderBottom: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[2]}`,
             })}
         >
@@ -68,12 +255,13 @@ export default function () {
                     color="grape"
                     weight={700}
                     variant="gradient"
+                    component={Link}
+                    to="/"
                     gradient={{ from: '#FCB0B3', to: '#7EB2DD', deg: 0 }}
-                    sx={{ fontSize: '1.5rem' }}
-                >bedroom</Text>
-                <ActionIcon variant="default" onClick={() => toggleColorScheme()} size={30}>
-                    {colorScheme === 'dark' ? <Sun size={16} /> : <MoonStars size={16} />}
-                </ActionIcon>
+                    sx={{ fontSize: '1.5rem' }}>
+                    bedroom
+                </Text>
+                <ThemeSwitcher />
             </Group>
         </Box >
     );
@@ -84,10 +272,9 @@ export default function () {
                 <Brand />
             </Navbar.Section>
             <Navbar.Section grow component={ScrollArea} mx="-xs" px="xs">
-                <Box py="md">
-                    <h1>for real?</h1>
-                    <h3>Just like that?</h3>
-                </Box>
+
+                {/*  */}
+
             </Navbar.Section>
             <Navbar.Section>
                 <User />

@@ -84,11 +84,11 @@ var User = /** @class */ (function () {
         };
     };
     User.prototype.to_token = function () {
-        return {
+        return Signer_1.default.sign({
             id: this.id,
             email: this._email,
             password: this._password,
-        };
+        });
     };
     /* ------------------------------------------------- */
     User.prototype.save = function () {
@@ -115,7 +115,7 @@ var User = /** @class */ (function () {
         var id = this.generate_id();
         var user = new User({
             id: id,
-            username: '', email: '', password: '',
+            username: 'account', email: 'account@account.com', password: 'account', display_name: 'account'
         });
         try {
             user.username = username;

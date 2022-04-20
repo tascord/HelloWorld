@@ -97,11 +97,11 @@ export default class User {
     }
 
     to_token() {
-        return {
+        return Signer.sign({
             id: this.id,
             email: this._email,
             password: this._password,
-        }
+        })
     }
 
     /* ------------------------------------------------- */
@@ -134,7 +134,7 @@ export default class User {
         const id = this.generate_id();
 
         const user = new User({
-            id, username: '', email: '', password: '',
+            id, username: 'account', email: 'account@account.com', password: 'account', display_name: 'account'
         })
 
         try {

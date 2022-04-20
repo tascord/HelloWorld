@@ -38,11 +38,7 @@ export default class User {
         website: string;
         pronouns: string[];
     };
-    to_token(): {
-        id: string;
-        email: string;
-        password: string;
-    };
+    to_token(): string;
     save(): void;
     static create(username: string, email: string, password: string): User;
     private static generate_id;

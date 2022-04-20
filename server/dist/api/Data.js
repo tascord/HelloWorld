@@ -9,7 +9,7 @@ var path_1 = require("path");
 var TableNames = [
     'Users', 'Username_ID_Map', 'Messages', 'Communities'
 ];
-var DB = new hasty_db_1.default((0, path_1.join)(__dirname, '../brc.db'));
+var DB = new hasty_db_1.default((0, path_1.join)(__dirname, '../../brc.db'));
 exports.Tables = {
     Users: DB.Table('users'),
     Username_ID_Map: DB.Table('username_id_map'),

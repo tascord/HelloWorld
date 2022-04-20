@@ -7,13 +7,13 @@ import RestObject, { Method } from "./api/Object";
 import { Logger } from "./api/Logger";
 import User from "./api/User";
 
+console.clear();
 const app = express();
 app.listen(4000, () => {
-    console.clear();
     Logger.info("Server started on port 4000", '🚀');
 })
 
-app.use(cors);
+app.use(cors());
 app.use(json());
 
 // Load REST routes
@@ -24,8 +24,9 @@ readdirSync(join(__dirname, 'api/rest'))
         const route = require(join(__dirname, 'api/rest', file)).Object as RestObject;
 
         Logger.info(`[REST] Loading endpoint /${route.endpoint}`, '🔗');
-
         const handle = (method: Method, i: Request, o: Response) => {
+
+            Logger.info(`[REST : HIT] ${method} /${route.endpoint}`, '🧭');
 
             try {
 
@@ -34,13 +35,15 @@ readdirSync(join(__dirname, 'api/rest'))
                     user = User.from_token(i.headers.authorization);
                 }
 
-                if (!user && route.authorized.includes(method)) return o.status(401).send({ error: 'Unauthorized' });
-                route[method](user, i.body).then(data => o.send(data))
+                if (!user && route.authorized.includes(method)) return o.status(401).end({ error: 'Unauthorized' });
+                route[method](user, i.body)
+                    .then(data => o.json(data))
+                    .catch(e => o.status(e.status ?? 400).end(e.message ?? e))
 
             }
 
             catch (e: any) {
-                o.status(e.status ?? 400).send(e.message ?? e);
+                o.status(e.status ?? 400).end(e.message ?? e);
             }
 
             finally {
@@ -54,4 +57,4 @@ readdirSync(join(__dirname, 'api/rest'))
         app.delete(`/${route.endpoint}`, (i, o) => handle('delete', i, o));
         app.patch(`/${route.endpoint}`, (i, o) => handle('patch', i, o));
 
-    })
+    });
