@@ -32,13 +32,13 @@ app.use((0, body_parser_1.json)());
                 user = User_1.default.from_token(i.headers.authorization);
             }
             if (!user && route.authorized.includes(method))
-                return o.status(401).end({ error: 'Unauthorized' });
-            route[method](user, i.body)
+                return o.status(401).end('Unauthorized');
+            route[method](user, i.body, i.params)
                 .then(function (data) { return o.json(data); })
-                .catch(function (e) { var _a, _b; return o.status((_a = e.status) !== null && _a !== void 0 ? _a : 400).end((_b = e.message) !== null && _b !== void 0 ? _b : e); });
+                .catch(function (e) { var _a, _b; return o.status((_a = e.status) !== null && _a !== void 0 ? _a : 400).end((_b = e.message) !== null && _b !== void 0 ? _b : e.toString()); });
         }
         catch (e) {
-            o.status((_a = e.status) !== null && _a !== void 0 ? _a : 400).end((_b = e.message) !== null && _b !== void 0 ? _b : e);
+            o.status((_a = e.status) !== null && _a !== void 0 ? _a : 400).end((_b = e.message) !== null && _b !== void 0 ? _b : e.toString());
         }
         finally {
             Logger_1.Logger.info("[REST : ".concat(o.statusCode, "] ").concat(method, " /").concat(route.endpoint), '🧭');

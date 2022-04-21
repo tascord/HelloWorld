@@ -35,15 +35,15 @@ readdirSync(join(__dirname, 'api/rest'))
                     user = User.from_token(i.headers.authorization);
                 }
 
-                if (!user && route.authorized.includes(method)) return o.status(401).end({ error: 'Unauthorized' });
-                route[method](user, i.body)
+                if (!user && route.authorized.includes(method)) return o.status(401).end('Unauthorized');
+                route[method](user, i.body, i.params)
                     .then(data => o.json(data))
-                    .catch(e => o.status(e.status ?? 400).end(e.message ?? e))
+                    .catch(e => o.status(e.status ?? 400).end(e.message ?? e.toString()))
 
             }
 
             catch (e: any) {
-                o.status(e.status ?? 400).end(e.message ?? e);
+                o.status(e.status ?? 400).end(e.message ?? e.toString());
             }
 
             finally {

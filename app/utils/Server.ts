@@ -9,12 +9,12 @@ export function api_request<T>(endpoint: string, method: 'post' | 'get' | 'put' 
             'Content-Type': 'application/json',
         };
 
-        if (token) headers['Authorization'] = `Bearer ${token}`;
+        if(token !== undefined) headers['Authorization'] = token;
 
         fetch(`${ServerLocation.base_url}/${endpoint}`, {
             method: method.toUpperCase(),
-            headers,
             body: JSON.stringify(data),
+            headers,
         })
             .then(async res => {
 

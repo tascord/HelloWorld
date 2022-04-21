@@ -1,3 +1,4 @@
+import Community from "./Community";
 import Message from "./Message";
 export default class User {
     readonly id: string;
@@ -5,6 +6,7 @@ export default class User {
     private _password;
     private _display_name;
     private _email;
+    private _communities;
     private _permissions;
     private _created;
     private _mfa?;
@@ -26,10 +28,11 @@ export default class User {
         id: string;
         username: string;
         display_name: string;
+        communities: string[];
         permissions: {
             [community_id: string]: number;
         };
-        created: Date;
+        created: number;
         email_verified: boolean;
         messages: string[];
         avatar: string;
@@ -44,6 +47,7 @@ export default class User {
     private static generate_id;
     password_matches(password: string): boolean;
     email_matches(email: string): boolean;
+    join_community(community: Community): void;
     get username(): string;
     get permissions(): {
         [community_id: string]: number;
@@ -57,6 +61,7 @@ export default class User {
     get location(): string;
     get website(): string;
     get pronouns(): string[];
+    get communities(): Community[];
     set username(username: string);
     set email(email: string);
     set password(password: string);
@@ -71,4 +76,5 @@ export default class User {
     set location(location: string);
     set website(website: string);
     set pronouns(pronouns: string[]);
+    set messages(messages: Message[]);
 }

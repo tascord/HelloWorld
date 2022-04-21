@@ -1,4 +1,5 @@
 import { createHash } from "crypto";
+import Community from "./Community";
 import { Tables } from "./Data";
 import Message from "./Message";
 import Signer from "./Signer";
@@ -9,6 +10,8 @@ export default class User {
     private _password: string;
     private _display_name: string;
     private _email: string;
+
+    private _communities: Community[];
 
     private _permissions: { [community_id: string]: number };
     private _created: Date;
@@ -27,6 +30,8 @@ export default class User {
         this._password = data.password;
         this._display_name = data.display_name;
         this._email = data.email;
+
+        this._communities = (data.communities ?? []).map((c: string) => Community.from_id(c));
 
         this._permissions = data.permissions ?? {};
         this._created = new Date(data.created ?? Date.now());
@@ -65,13 +70,13 @@ export default class User {
     }
 
     static from_token(token: string) {
-        if(!Signer.verify(token)) throw new Error('Unable to verify token');
-        
+        if (!Signer.verify(token)) throw new Error('Unable to verify token');
+
         const data = Signer.decode(token)?.payload as any;
-        if(!data) throw new Error('Unable to decode token');
+        if (!data) throw new Error('Unable to decode token');
 
         const user = User.from_id(data.id);
-        if(!user.password_matches(data.password) || !user.email_matches(data.email)) throw new Error('Invalid token');
+        if (!user.password_matches(data.password) || !user.email_matches(data.email)) throw new Error('Invalid token');
 
         return user;
     }
@@ -84,8 +89,10 @@ export default class User {
             username: this._username,
             display_name: this._display_name,
 
+            communities: this._communities.map(c => c.id),
+
             permissions: this.permissions,
-            created: this.created,
+            created: this.created.getTime(),
             email_verified: this.email_verified,
             messages: this._messages.map(m => m.id),
             avatar: this._avatar,
@@ -114,11 +121,13 @@ export default class User {
             display_name: this._display_name,
             email: this._email,
 
+            communities: this._communities.map(c => c.id),
+
             permissions: this._permissions,
             created: this._created.getTime(),
             mfa: this._mfa,
             email_verified: this._email_verified,
-            messages: this._messages.map((m: Message) => m.id),
+            messages: this._messages.map(m => m.id),
             avatar: this._avatar,
             bio: this._bio,
             location: this._location,
@@ -165,11 +174,18 @@ export default class User {
     /* ------------------------------------------------- */
 
     public password_matches(password: string) {
-        return createHash('sha256').update(password).digest('hex') === this._password;
+        return password === this._password || createHash('sha256').update(password).digest('hex') === this._password;
     }
 
     public email_matches(email: string) {
         return this._email === email;
+    }
+
+    /* ------------------------------------------------- */
+
+    join_community(community: Community) {
+        this._communities.push(community);
+        this.save();
     }
 
     /* ------------------------------------------------- */
@@ -185,6 +201,7 @@ export default class User {
     get location() { return this._location }
     get website() { return this._website }
     get pronouns() { return this._pronouns }
+    get communities() { return this._communities }
 
     set username(username: string) {
 
@@ -261,6 +278,11 @@ export default class User {
 
     set pronouns(pronouns: string[]) {
         this._pronouns = pronouns;
+        this.save();
+    }
+
+    set messages(messages: Message[]) {
+        this._messages = messages;
         this.save();
     }
 

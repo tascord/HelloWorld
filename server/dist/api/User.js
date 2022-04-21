@@ -4,27 +4,29 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var crypto_1 = require("crypto");
+var Community_1 = __importDefault(require("./Community"));
 var Data_1 = require("./Data");
 var Message_1 = __importDefault(require("./Message"));
 var Signer_1 = __importDefault(require("./Signer"));
 var User = /** @class */ (function () {
     function User(data) {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
         this.id = data.id;
         this._username = data.username;
         this._password = data.password;
         this._display_name = data.display_name;
         this._email = data.email;
-        this._permissions = (_a = data.permissions) !== null && _a !== void 0 ? _a : {};
-        this._created = new Date((_b = data.created) !== null && _b !== void 0 ? _b : Date.now());
-        this._mfa = (_c = data.mfa) !== null && _c !== void 0 ? _c : undefined;
-        this._email_verified = (_d = data.email_verified) !== null && _d !== void 0 ? _d : false;
-        this._messages = ((_e = data.messages) !== null && _e !== void 0 ? _e : []).map(function (m) { return Message_1.default.from_id(m); });
-        this._avatar = (_f = data.avatar) !== null && _f !== void 0 ? _f : 'default';
-        this._bio = (_g = data.bio) !== null && _g !== void 0 ? _g : '';
-        this._location = (_h = data.location) !== null && _h !== void 0 ? _h : '';
-        this._website = (_j = data.website) !== null && _j !== void 0 ? _j : '';
-        this._pronouns = (_k = data.pronouns) !== null && _k !== void 0 ? _k : [];
+        this._communities = ((_a = data.communities) !== null && _a !== void 0 ? _a : []).map(function (c) { return Community_1.default.from_id(c); });
+        this._permissions = (_b = data.permissions) !== null && _b !== void 0 ? _b : {};
+        this._created = new Date((_c = data.created) !== null && _c !== void 0 ? _c : Date.now());
+        this._mfa = (_d = data.mfa) !== null && _d !== void 0 ? _d : undefined;
+        this._email_verified = (_e = data.email_verified) !== null && _e !== void 0 ? _e : false;
+        this._messages = ((_f = data.messages) !== null && _f !== void 0 ? _f : []).map(function (m) { return Message_1.default.from_id(m); });
+        this._avatar = (_g = data.avatar) !== null && _g !== void 0 ? _g : 'default';
+        this._bio = (_h = data.bio) !== null && _h !== void 0 ? _h : '';
+        this._location = (_j = data.location) !== null && _j !== void 0 ? _j : '';
+        this._website = (_k = data.website) !== null && _k !== void 0 ? _k : '';
+        this._pronouns = (_l = data.pronouns) !== null && _l !== void 0 ? _l : [];
         if (!this.id)
             throw new Error('User must have an ID');
         if (!this._username)
@@ -72,8 +74,9 @@ var User = /** @class */ (function () {
             id: this.id,
             username: this._username,
             display_name: this._display_name,
+            communities: this._communities.map(function (c) { return c.id; }),
             permissions: this.permissions,
-            created: this.created,
+            created: this.created.getTime(),
             email_verified: this.email_verified,
             messages: this._messages.map(function (m) { return m.id; }),
             avatar: this._avatar,
@@ -98,6 +101,7 @@ var User = /** @class */ (function () {
             password: this._password,
             display_name: this._display_name,
             email: this._email,
+            communities: this._communities.map(function (c) { return c.id; }),
             permissions: this._permissions,
             created: this._created.getTime(),
             mfa: this._mfa,
@@ -140,10 +144,15 @@ var User = /** @class */ (function () {
     };
     /* ------------------------------------------------- */
     User.prototype.password_matches = function (password) {
-        return (0, crypto_1.createHash)('sha256').update(password).digest('hex') === this._password;
+        return password === this._password || (0, crypto_1.createHash)('sha256').update(password).digest('hex') === this._password;
     };
     User.prototype.email_matches = function (email) {
         return this._email === email;
+    };
+    /* ------------------------------------------------- */
+    User.prototype.join_community = function (community) {
+        this._communities.push(community);
+        this.save();
     };
     Object.defineProperty(User.prototype, "username", {
         /* ------------------------------------------------- */
@@ -198,6 +207,10 @@ var User = /** @class */ (function () {
     });
     Object.defineProperty(User.prototype, "messages", {
         get: function () { return this._messages; },
+        set: function (messages) {
+            this._messages = messages;
+            this.save();
+        },
         enumerable: false,
         configurable: true
     });
@@ -244,6 +257,11 @@ var User = /** @class */ (function () {
             this._pronouns = pronouns;
             this.save();
         },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(User.prototype, "communities", {
+        get: function () { return this._communities; },
         enumerable: false,
         configurable: true
     });

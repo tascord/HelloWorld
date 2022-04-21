@@ -13,10 +13,10 @@ export default class RestObject {
         this.authorized = authorized;
     }
 
-    post(user: User | undefined, data: any): Response { return Promise.reject(`No POST method exists for /${this.endpoint}`) }
-    get(user: User | undefined, data: any): Response { return Promise.reject(`No GET method exists for /${this.endpoint}`) }
-    put(user: User | undefined, data: any): Response { return Promise.reject(`No PUT method exists for /${this.endpoint}`) }
-    delete(user: User | undefined, data: any): Response { return Promise.reject(`No DELETE method exists for /${this.endpoint}`) }
-    patch(user: User | undefined, data: any): Response { return Promise.reject(`No PATCH method exists for /${this.endpoint}`) }
+    post(user: User | undefined, data: any, params: {[key: string]: string}): Response { return Promise.reject(`No POST method exists for /${this.endpoint}`) }
+    get(user: User | undefined, data: any, params: {[key: string]: string}): Response { return Promise.reject(`No GET method exists for /${this.endpoint}`) }
+    put(user: User | undefined, data: any, params: {[key: string]: string}): Response { return Promise.reject(`No PUT method exists for /${this.endpoint}`) }
+    delete(user: User | undefined, data: any, params: {[key: string]: string}): Response { return Promise.reject(`No DELETE method exists for /${this.endpoint}`) }
+    patch(user: User | undefined, data: any, params: {[key: string]: string}): Response { return Promise.reject(`No PATCH method exists for /${this.endpoint}`) }
 
 }

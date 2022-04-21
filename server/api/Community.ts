@@ -97,13 +97,14 @@ export default class Community {
     static create(user: User, name: string, description: string) {
 
         const id = this.generate_id();
+
         user.permissions = {
             ...user.permissions,
             [id]: DefaultPermissions.lead
         }
 
         const community = new Community({
-            id, owner_id: user.id, name: '', description: ''
+            id, owner_id: user.id, name: 'community', description: 'community'
         })
 
         try {
@@ -119,6 +120,7 @@ export default class Community {
             throw e;
         }
 
+        user.join_community(community);
         return community;
 
     }
@@ -152,7 +154,7 @@ export default class Community {
         if (!UserHasPermissionInCommunity(user, this, 'community_lead_rename')) throw new Error('User does not have permission to rename community');
 
         if (name.length < 3 || name.length > 20) throw new Error('Community name must be between 3 and 20 characters long');
-        if (name.match(/[^a-zA-Z0-9_]/)) throw new Error('Community name must only contain letters, numbers, and underscores');
+        if (name.match(/[^a-zA-Z0-9_ ]/)) throw new Error('Community name must only contain letters, numbers, spaces and underscores');
 
         this._name = name;
         this.save();
