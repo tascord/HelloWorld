@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Avatar, Box, Group, Navbar, ScrollArea, UnstyledButton, Text, useMantineTheme, ActionIcon, useMantineColorScheme, SimpleGrid, TextInput, Button, TextProps, Menu, Modal, Textarea, AppShell, ColorScheme, ColorSchemeProvider, MantineProvider } from "@mantine/core";
-import { ActionFunction, Form, Link, Links, LinksFunction, LiveReload, LoaderFunction, Meta, Outlet, redirect, Scripts, ScrollRestoration, useActionData, useLoaderData, useTransition } from "remix";
+import { ActionFunction, Form, Link, Links, LinksFunction, LiveReload, LoaderFunction, Meta, MetaFunction, Outlet, redirect, Scripts, ScrollRestoration, useActionData, useLoaderData, useTransition } from "remix";
 import { ChevronRight, ChevronLeft, MoonStars, Sun, Logout, Settings, Plus, Search } from "tabler-icons-react";
 import { format_media } from "~/utils/Server";
 import { commitSession, getSession } from "~/utils/Session";
@@ -13,7 +13,6 @@ import NProgress from "nprogress";
 import nProgressStyles from "nprogress/nprogress.css";
 import Styles from "~/style.css"
 
-
 export const loader: LoaderFunction = ({ request }) => new Promise(async resolve => {
   const session = await getSession(request.headers.get("Cookie"));
   if (!session.has('token')) return resolve(null);
@@ -22,7 +21,7 @@ export const loader: LoaderFunction = ({ request }) => new Promise(async resolve
     .then(user => resolve({ ...user, token: session.get('token') }))
     .catch(async () => {
       session.unset('token');
-      resolve(redirect('/', {
+            resolve(redirect('/', {
         headers: {
           'Set-Cookie': await commitSession(session)
         }
@@ -42,7 +41,7 @@ export const action: ActionFunction = ({ request }) => new Promise(async resolve
   api_request<{ token: string }>('user', email ? 'put' : 'post', { email: email?.toString(), username: username?.toString(), password: password?.toString() })
     .then(async ({ token }) => {
       session.set('token', token);
-      resolve(redirect('/', {
+            resolve(redirect('/', {
         headers: {
           'Set-Cookie': await commitSession(session)
         }
@@ -54,11 +53,14 @@ export const action: ActionFunction = ({ request }) => new Promise(async resolve
 
 })
 
-
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: Styles },
   { rel: "stylesheet", href: nProgressStyles }
 ]
+
+export const meta: MetaFunction = () => ({
+  title: 'bedroom !',
+})
 
 const Layout = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
 
@@ -276,6 +278,10 @@ function Timeline(user: TokenUser) {
   const theme = useMantineTheme();
 
   const User = ({ }) => (
+
+    // TODO: Fix theme issues here
+    // Doesn't seem to effect <Brand /> ?
+
     <Box
       sx={{
         paddingTop: theme.spacing.sm,
@@ -297,7 +303,7 @@ function Timeline(user: TokenUser) {
 
               '&:hover': {
                 backgroundColor:
-                  theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
+                  theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[8],
               },
             }}
           >
@@ -307,15 +313,14 @@ function Timeline(user: TokenUser) {
                 radius="xl"
               />
               <Box sx={{ flex: 1 }}>
-                <Text size="sm" weight={500}>
+                <ThemedText size="sm" weight={500} lightness={10}>
                   {user.display_name}
-                </Text>
+                </ThemedText>
                 <Text color="dimmed" size="xs">
                   @{user.username}
                 </Text>
               </Box>
-
-              {theme.dir === 'ltr' ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
+              {theme.dir === 'ltr' ? <ChevronRight size={18} color={theme.colors.gray[5]} /> : <ChevronLeft size={18} color={theme.colors.gray[5]} />}
             </Group>
           </UnstyledButton>
         }>
@@ -368,7 +373,6 @@ function Timeline(user: TokenUser) {
       let data: Community[] = [];
 
       for (let i = 0; i <= Math.min(user.communities.length - 1, 10); i++) {
-        console.log('Fetching', user.communities[i]);
         api_request<Community>(`community/${user.communities[i]}`, 'get', undefined, user.token)
           .then(community => data.push(community))
           .catch(e => console.log(`Unable to poll for community at ID ${i}:\n${e}`))
@@ -403,6 +407,7 @@ function Timeline(user: TokenUser) {
         {
           communities.map(c => (
             <Button
+              key={c.id}
               variant="light"
               color="yellow"
               mt="xs"

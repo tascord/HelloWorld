@@ -45,6 +45,19 @@ var Community = /** @class */ (function () {
         return new Community(Data_1.Tables.Communities.get(id));
     };
     /* ------------------------------------------------- */
+    Community.for_user = function (user) {
+        return new Community({
+            id: '0',
+            name: user.display_name,
+            description: "".concat(user.display_name, "'s personal community"),
+            owner_id: user.id,
+            created: user.created,
+            users: [user],
+            messages: user.wall.map(function (m) { return m.id; }),
+            audit_log: []
+        });
+    };
+    /* ------------------------------------------------- */
     Community.prototype.to_public = function (user) {
         // TODO: Private communities
         if (user && !(0, Permissions_1.UserHasPermissionInCommunity)(user, this, 'community_read'))
@@ -62,12 +75,16 @@ var Community = /** @class */ (function () {
     };
     /* ------------------------------------------------- */
     Community.prototype.save = function () {
+        if (this.id === '0') {
+            User_1.default.from_id(this._owner_id).wall = this._messages;
+            return;
+        }
         Data_1.Tables.Communities.set(this.id, {
             id: this.id,
             name: this._name,
             description: this._description,
             owner_id: this._owner_id,
-            created: this._created,
+            created: this._created.getTime(),
             users: this._users.map(function (u) { return u.id; }),
             messages: this._messages.map(function (m) { return m.id; }),
             audit_log: this._audit_log

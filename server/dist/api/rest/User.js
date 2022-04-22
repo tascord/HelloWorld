@@ -6,39 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Object = void 0;
 var Object_1 = __importDefault(require("../Object"));
 var User_1 = __importDefault(require("../User"));
-exports.Object = new Object_1.default('user', ['patch']);
-// Get a user
-exports.Object.get = function (_user, data) { return new Promise(function (resolve) {
-    if (!data.id)
-        throw new Error('No ID provided');
-    resolve(User_1.default.from_identifier(data.id).to_public());
-}); };
-// Modify a user
-exports.Object.patch = function (user, data) { return new Promise(function (resolve) {
-    if (!user)
-        return;
-    var target = User_1.default.from_identifier(data.id);
-    if (target.id !== user.id)
-        throw new Error('You can only modify your own user');
-    var username = data.username, password = data.password, email = data.email, avatar = data.avatar, bio = data.bio, location = data.location, website = data.website, pronouns = data.pronouns;
-    if (username)
-        target.username = username;
-    if (password)
-        target.password = password;
-    if (email)
-        target.email = email;
-    if (avatar)
-        target.avatar = avatar;
-    if (bio)
-        target.bio = bio;
-    if (location)
-        target.location = location;
-    if (website)
-        target.website = website;
-    if (pronouns)
-        target.pronouns = pronouns;
-    resolve(target);
-}); };
+exports.Object = new Object_1.default('user', []);
 // Create a user
 exports.Object.put = function (_user, data) { return new Promise(function (resolve) {
     var username = data.username, password = data.password, email = data.email;

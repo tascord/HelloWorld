@@ -4,21 +4,27 @@ import User from "./User";
 
 export default class Message {
     readonly id: string;
+    readonly title: string;
     private _content: string;
     readonly created: Date;
     readonly author_id: string;
+    readonly community_id: string;
     private _edits: string[];
 
     constructor(data: { [key: string]: any }) {
         this.id = data.id;
+        this.title = data.title;
         this._content = data.content;
         this.created = new Date(data.created);
+        this.community_id = data.community_id;
         this.author_id = data.author_id;
         this._edits = data.edits ?? [];
 
         if (!this.id) throw new Error('Message must have an ID');
+        if (!this.title) throw new Error('Message must have a title');
         if (!this._content) throw new Error('Message must have content');
         if (!this.created) throw new Error('Message must have a creation date');
+        if (!this.community_id) throw new Error('Message must have a community ID');
         if (!this.author_id) throw new Error('Message must have an author');
     }
 
@@ -34,9 +40,11 @@ export default class Message {
     to_public() {
         return {
             id: this.id,
+            title: this.title,
             content: this.content,
             created: this.created.getTime(),
             author_id: this.author_id,
+            community_id: this.community_id,
             edits: this.edits
         }
     }
@@ -49,7 +57,7 @@ export default class Message {
 
     /* ------------------------------------------------- */
 
-    static create(content: string, community: Community, author: User) {
+    static create(title: string, content: string, community: Community, author: User) {
 
         let id;
         do { id = Date.now().toString() }
@@ -57,6 +65,9 @@ export default class Message {
 
         if (content.length < 5) throw new Error('Message must be at least 5 characters long');
         if (content.length > 1000) throw new Error('Message must be less than 1000 characters long');
+
+        if (title.length < 5) throw new Error('Title must be at least 5 characters long');
+        if (title.length > 40) throw new Error('Title must be less than 40 characters long');
 
         // Normalize string
         content = content.normalize();
@@ -67,21 +78,21 @@ export default class Message {
 
         Tables.Messages.set(id, {
             id,
+            title,
             content,
             created: Date.now(),
-            author_id: author
+            author_id: author.id,
+            community_id: community.id
         });
 
-        author.messages.push(
-            new Message({
-                id,
-                content,
-                created: Date.now(),
-                author_id: author.id
-            })
-        );
+        const message = this.from_id(id);
 
+        author.messages.push(message);
         author.save();
+
+        community.messages.push(message);
+        community.save();
+
         return this.from_id(id);
 
     }
@@ -108,8 +119,9 @@ export default class Message {
         Tables.Messages.set(this.id, {
             id: this.id,
             content,
-            created: Date.now(),
-            author_id: this.author_id
+            created: this.created,
+            author_id: this.author_id,
+            community_id: this.community_id
         });
 
 

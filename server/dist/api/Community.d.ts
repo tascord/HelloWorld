@@ -19,6 +19,7 @@ export default class Community {
         [key: string]: any;
     });
     static from_id(id: string): Community;
+    static for_user(user: User): Community;
     to_public(user?: User): {
         id: string;
         name: string;

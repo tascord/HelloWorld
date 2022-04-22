@@ -10,7 +10,7 @@ var Message_1 = __importDefault(require("./Message"));
 var Signer_1 = __importDefault(require("./Signer"));
 var User = /** @class */ (function () {
     function User(data) {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
         this.id = data.id;
         this._username = data.username;
         this._password = data.password;
@@ -27,6 +27,7 @@ var User = /** @class */ (function () {
         this._location = (_j = data.location) !== null && _j !== void 0 ? _j : '';
         this._website = (_k = data.website) !== null && _k !== void 0 ? _k : '';
         this._pronouns = (_l = data.pronouns) !== null && _l !== void 0 ? _l : [];
+        this._wall = ((_m = data.wall) !== null && _m !== void 0 ? _m : []).map(function (m) { return Message_1.default.from_id(m); });
         if (!this.id)
             throw new Error('User must have an ID');
         if (!this._username)
@@ -84,6 +85,7 @@ var User = /** @class */ (function () {
             location: this._location,
             website: this._website,
             pronouns: this._pronouns,
+            wall: this._wall.map(function (m) { return m.id; }),
         };
     };
     User.prototype.to_token = function () {
@@ -112,6 +114,7 @@ var User = /** @class */ (function () {
             location: this._location,
             website: this._website,
             pronouns: this._pronouns,
+            wall: this._wall.map(function (m) { return m.id; }),
         });
     };
     /* ------------------------------------------------- */
@@ -262,6 +265,15 @@ var User = /** @class */ (function () {
     });
     Object.defineProperty(User.prototype, "communities", {
         get: function () { return this._communities; },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(User.prototype, "wall", {
+        get: function () { return this._wall; },
+        set: function (wall) {
+            this._wall = wall;
+            this.save();
+        },
         enumerable: false,
         configurable: true
     });

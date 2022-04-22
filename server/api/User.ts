@@ -23,6 +23,7 @@ export default class User {
     private _location: string;
     private _website: string;
     private _pronouns: string[];
+    private _wall: Message[];
 
     constructor(data: { [key: string]: any }) {
         this.id = data.id;
@@ -43,6 +44,8 @@ export default class User {
         this._location = data.location ?? '';
         this._website = data.website ?? '';
         this._pronouns = data.pronouns ?? [];
+
+        this._wall = (data.wall ?? []).map((m: string) => Message.from_id(m));
 
         if (!this.id) throw new Error('User must have an ID');
         if (!this._username) throw new Error('Username is required');
@@ -100,6 +103,8 @@ export default class User {
             location: this._location,
             website: this._website,
             pronouns: this._pronouns,
+
+            wall: this._wall.map(m => m.id),
         }
     }
 
@@ -133,6 +138,8 @@ export default class User {
             location: this._location,
             website: this._website,
             pronouns: this._pronouns,
+
+            wall: this._wall.map(m => m.id),
         });
     }
 
@@ -202,6 +209,7 @@ export default class User {
     get website() { return this._website }
     get pronouns() { return this._pronouns }
     get communities() { return this._communities }
+    get wall() { return this._wall }
 
     set username(username: string) {
 
@@ -236,6 +244,11 @@ export default class User {
     set display_name(display_name: string) {
         if (display_name.length < 3 || display_name.length > 20) throw new Error('Display name must be between 3 and 20 characters');
         this._display_name = display_name;
+        this.save();
+    }
+
+    set wall(wall: Message[]) {
+        this._wall = wall;
         this.save();
     }
 

@@ -49,6 +49,21 @@ export default class Community {
 
     /* ------------------------------------------------- */
 
+    static for_user(user: User) {
+        return new Community({
+            id: '0',
+            name: user.display_name,
+            description: `${user.display_name}'s personal community`,
+            owner_id: user.id,
+            created: user.created,
+            users: [user],
+            messages: user.wall.map(m => m.id),
+            audit_log: []
+        })
+    }
+
+    /* ------------------------------------------------- */
+
     to_public(user?: User) {
 
         // TODO: Private communities
@@ -71,13 +86,19 @@ export default class Community {
     /* ------------------------------------------------- */
 
     save() {
+
+        if(this.id === '0') {
+            User.from_id(this._owner_id).wall = this._messages;
+            return;
+        }
+
         Tables.Communities.set(this.id, {
             id: this.id,
             name: this._name,
             description: this._description,
             owner_id: this._owner_id,
 
-            created: this._created,
+            created: this._created.getTime(),
             users: this._users.map(u => u.id),
             messages: this._messages.map(m => m.id),
 

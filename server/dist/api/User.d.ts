@@ -17,6 +17,7 @@ export default class User {
     private _location;
     private _website;
     private _pronouns;
+    private _wall;
     constructor(data: {
         [key: string]: any;
     });
@@ -40,6 +41,7 @@ export default class User {
         location: string;
         website: string;
         pronouns: string[];
+        wall: string[];
     };
     to_token(): string;
     save(): void;
@@ -62,10 +64,12 @@ export default class User {
     get website(): string;
     get pronouns(): string[];
     get communities(): Community[];
+    get wall(): Message[];
     set username(username: string);
     set email(email: string);
     set password(password: string);
     set display_name(display_name: string);
+    set wall(wall: Message[]);
     set permissions(permissions: {
         [community_id: string]: number;
     });

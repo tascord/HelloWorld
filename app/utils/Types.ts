@@ -14,6 +14,7 @@ export type User = {
     website: string;
     pronouns: string[];
     communities: string[];
+    wall: string[];
 }
 
 export type Community = {
@@ -35,9 +36,11 @@ export type Audit = {
 
 export type Message = {
     id: string;
+    title: string;
     content: string;
     created: number;
     author_id: string;
+    community_id: string;
     edits: string[];
 }
 
