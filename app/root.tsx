@@ -392,7 +392,7 @@ function Timeline(user: TokenUser) {
       api_request<Community>('community', 'put', fields, user.token)
         .then(({ id }) => {
           // TODO: Remix redirect
-          window.location.pathname = '/c/' + id;
+          window.location.pathname = id;
         })
         .catch(error => {
           setError(error);
@@ -412,7 +412,7 @@ function Timeline(user: TokenUser) {
               color="yellow"
               mt="xs"
               component={Link}
-              to={`/c/${c.id}`}
+              to={c.id}
               style={{ width: '100%' }}>
               {c.name}
             </Button>

@@ -1,10 +1,12 @@
 import { Link, LoaderFunction, MetaFunction, Outlet, redirect, useLoaderData } from "remix";
-import { ActionIcon, Box, MantineColor, Text } from "@mantine/core";
+import { ActionIcon, Box, Group, MantineColor, Text } from "@mantine/core";
 import { api_request } from "~/utils/Server";
 import { commitSession, getSession } from "~/utils/Session";
 import { Community, Message, User } from "~/utils/Types";
 import { ThemedText } from "~/root";
 import { PostButton } from ".";
+import { At, Globe, Users } from "tabler-icons-react";
+import { RichText } from "~/components/Editor";
 
 export const loader: LoaderFunction = ({ request, params }) => new Promise(async resolve => {
 
@@ -13,10 +15,15 @@ export const loader: LoaderFunction = ({ request, params }) => new Promise(async
         return resolve(redirect('/'));
     }
 
-    const community = await api_request<Message[]>('community/' + params.id!, 'get', undefined, session.get('token'))
+    const community = await api_request<Community>('community/' + params.id!, 'get', undefined, session.get('token'))
         .catch(resolve)
 
-    const user = await api_request<Message[]>('me', 'get', undefined, session.get('token'))
+    if (!community) return;
+
+    const target = community.id === '0' ? await api_request<User>('user/' + params.id!, 'get', undefined, session.get('token'))
+        .catch(resolve) : undefined
+
+    const user = await api_request<User>('me', 'get', undefined, session.get('token'))
         .catch(async () => {
             session.unset('token');
             resolve(redirect('/', {
@@ -26,13 +33,13 @@ export const loader: LoaderFunction = ({ request, params }) => new Promise(async
             }));
         })
 
-    resolve([community, user, session.get('token')]);
+    resolve([community, target, user, session.get('token')]);
 
 
 })
 
 export const meta: MetaFunction = ({ data }) => ({
-    title: typeof data === 'string' ? 'bedroom !' : (data[0] as Community).name + ' @ bedroom !',
+    title: typeof data === 'string' ? 'bedroom !' : (data[0] as Community).name + ' // bedroom !',
 })
 
 export function Hint({ text, icon, link, color }: { text: string, icon: JSX.Element, link?: string, color?: MantineColor }) {
@@ -86,7 +93,7 @@ export function Hint({ text, icon, link, color }: { text: string, icon: JSX.Elem
 
 export default function () {
 
-    const data = useLoaderData<string | [Community, User, string]>();
+    const data = useLoaderData<string | [Community, User | undefined, User, string]>();
 
     if (typeof data === 'string') return (
         <>
@@ -99,8 +106,8 @@ export default function () {
         </>
     )
 
-    const [community, user, token] = data;
-   
+    const [community, target, user, token] = data;
+
     return (
         <>
             <PostButton user={user} community={community} token={token} />
@@ -112,11 +119,23 @@ export default function () {
                     variant="gradient"
                     gradient={{ from: '#FCB0B3', to: '#7EB2DD', deg: 0 }}
                     sx={{ fontSize: '2.5rem' }}>
-                    {community.name}
+                    {target?.display_name ?? community.name}
                 </Text>
-                <ThemedText>
-                    {community.description}
-                </ThemedText>
+                {
+                    !target ? <>
+                        <Hint color="grape" icon={<Users />} text={`${community.users.length} member${community.users.length === 1 ? '' : 's'}`} />
+                        <ThemedText>
+                            {community.description}
+                        </ThemedText>
+                    </> : <>
+                        <Group>
+                            <Hint color="grape" icon={<At />} text={target.username} />
+                            <Hint color="blue" icon={<Users />} text={`${target.followers.length} Follower${target.followers.length === 1 ? '' : 's'}, ${target.following.length} Following`} />
+                            <Hint color="green" icon={<Globe />} text={`Member of ${target.communities.length} ${target.communities.length === 1 ? 'community' : 'communities'}`} />
+                        </Group>
+                        <RichText onChange={() => { }} value={target.bio} readOnly />
+                    </>
+                }
             </Box>
             <Outlet />
         </>

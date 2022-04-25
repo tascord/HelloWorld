@@ -31,7 +31,6 @@ export default class Community {
         audit_log: Audit[];
     };
     save(): void;
-    private static generate_id;
     static create(user: User, name: string, description: string): Community;
     private post_audit;
     get name(): string;

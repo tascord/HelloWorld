@@ -3,4 +3,5 @@ declare const TableNames: readonly ["Users", "Username_ID_Map", "Messages", "Com
 export declare const Tables: {
     [key in typeof TableNames[number]]: Hastyable;
 };
+export declare function generate_id(): string;
 export {};

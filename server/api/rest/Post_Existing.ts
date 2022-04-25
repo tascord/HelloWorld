@@ -5,7 +5,7 @@ import { UserHasPermissionInCommunity } from "../Permissions";
 export const Object = new RestObject('community/:id/post/:post', ['patch', 'put', 'delete']);
 
 // Get a post
-Object.get = (_user, data, { id, post }) => new Promise((resolve) => {
+Object.get = (_user, _data, { id, post }) => new Promise((resolve) => {
     const community = Community.from_id(id);
     const message = community.messages.find(m => m.id === post);
     if (!message) throw new Error("No message exists with that ID");

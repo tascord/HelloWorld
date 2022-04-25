@@ -40,19 +40,22 @@ var Community = /** @class */ (function () {
     }
     /* ------------------------------------------------- */
     Community.from_id = function (id) {
+        if (Data_1.Tables.Users.has(id) || Data_1.Tables.Username_ID_Map.has(id))
+            return Community.for_user(User_1.default.from_identifier(id));
         if (!Data_1.Tables.Communities.has(id))
             throw new Error("Community with id '".concat(id, "' does not exist"));
         return new Community(Data_1.Tables.Communities.get(id));
     };
     /* ------------------------------------------------- */
     Community.for_user = function (user) {
+        var _a, _b;
         return new Community({
             id: '0',
-            name: user.display_name,
-            description: "".concat(user.display_name, "'s personal community"),
+            name: (_a = user.display_name) !== null && _a !== void 0 ? _a : user.username,
+            description: "".concat((_b = user.display_name) !== null && _b !== void 0 ? _b : user.username, "'s personal community"),
             owner_id: user.id,
             created: user.created,
-            users: [user],
+            users: [user.id],
             messages: user.wall.map(function (m) { return m.id; }),
             audit_log: []
         });
@@ -91,16 +94,9 @@ var Community = /** @class */ (function () {
         });
     };
     /* ------------------------------------------------- */
-    Community.generate_id = function () {
-        var id;
-        do {
-            id = Date.now().toString();
-        } while (Data_1.Tables.Communities.has(id));
-        return id;
-    };
     Community.create = function (user, name, description) {
         var _a;
-        var id = this.generate_id();
+        var id = (0, Data_1.generate_id)();
         user.permissions = __assign(__assign({}, user.permissions), (_a = {}, _a[id] = Permissions_1.DefaultPermissions.lead, _a));
         var community = new Community({
             id: id,

@@ -1,4 +1,4 @@
-import { Tables } from "./Data";
+import { Tables, generate_id } from "./Data";
 import Message from "./Message";
 import { Action, DefaultPermissions, UserHasPermissionInCommunity } from "./Permissions";
 import User from "./User";
@@ -43,6 +43,7 @@ export default class Community {
     /* ------------------------------------------------- */
 
     static from_id(id: string) {
+        if (Tables.Users.has(id) || Tables.Username_ID_Map.has(id)) return Community.for_user(User.from_identifier(id));
         if (!Tables.Communities.has(id)) throw new Error(`Community with id '${id}' does not exist`);
         return new Community(Tables.Communities.get(id));
     }
@@ -52,11 +53,11 @@ export default class Community {
     static for_user(user: User) {
         return new Community({
             id: '0',
-            name: user.display_name,
-            description: `${user.display_name}'s personal community`,
+            name: user.display_name ?? user.username,
+            description: `${user.display_name ?? user.username}'s personal community`,
             owner_id: user.id,
             created: user.created,
-            users: [user],
+            users: [user.id],
             messages: user.wall.map(m => m.id),
             audit_log: []
         })
@@ -87,7 +88,7 @@ export default class Community {
 
     save() {
 
-        if(this.id === '0') {
+        if (this.id === '0') {
             User.from_id(this._owner_id).wall = this._messages;
             return;
         }
@@ -108,16 +109,9 @@ export default class Community {
 
     /* ------------------------------------------------- */
 
-    private static generate_id() {
-        let id: string;
-        do { id = Date.now().toString(); }
-        while (Tables.Communities.has(id));
-        return id;
-    }
-
     static create(user: User, name: string, description: string) {
 
-        const id = this.generate_id();
+        const id = generate_id();
 
         user.permissions = {
             ...user.permissions,

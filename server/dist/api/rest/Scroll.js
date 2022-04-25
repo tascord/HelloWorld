@@ -15,7 +15,7 @@ exports.Object.post = function (user, data, _a) {
         if (!user)
             return;
         var page = ((_a = data.page) !== null && _a !== void 0 ? _a : 0) + 1;
-        // Community
+        // Community & User
         if (/^[0-9]{13}$/.test(location)) {
             var posts = Community_1.default.from_id(location).messages.slice(page * 10, (page + 1) * 10);
             var flat = posts.flat().map(function (p) { return p.to_public(); });
@@ -24,7 +24,7 @@ exports.Object.post = function (user, data, _a) {
         }
         switch (location) {
             case 'home':
-                var posts = user.communities.map(function (c) { return c.messages.slice(page * 10, (page + 1) * 10); });
+                var posts = user.communities.concat(user.followers.map(function (u) { return Community_1.default.for_user(u); })).map(function (c) { return c.messages.slice(page * 10, (page + 1) * 10); });
                 var flat = posts.flat().map(function (p) { return p.to_public(); });
                 var sorted = flat.sort(function (a, b) { return b.created - a.created; });
                 return resolve(sorted);

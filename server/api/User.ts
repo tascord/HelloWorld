@@ -13,6 +13,9 @@ export default class User {
 
     private _communities: Community[];
 
+    private _followers: User[];
+    private _following: User[];
+
     private _permissions: { [community_id: string]: number };
     private _created: Date;
     private _mfa?: string;
@@ -29,10 +32,13 @@ export default class User {
         this.id = data.id;
         this._username = data.username;
         this._password = data.password;
-        this._display_name = data.display_name;
+        this._display_name = data.display_name ?? data.username;
         this._email = data.email;
 
         this._communities = (data.communities ?? []).map((c: string) => Community.from_id(c));
+
+        this._followers = (data.followers ?? []).map((u: string) => User.from_id(u));
+        this._following = (data.followers ?? []).map((u: string) => User.from_id(u));
 
         this._permissions = data.permissions ?? {};
         this._created = new Date(data.created ?? Date.now());
@@ -94,6 +100,9 @@ export default class User {
 
             communities: this._communities.map(c => c.id),
 
+            followers: this._followers,
+            following: this._following,
+
             permissions: this.permissions,
             created: this.created.getTime(),
             email_verified: this.email_verified,
@@ -127,6 +136,9 @@ export default class User {
             email: this._email,
 
             communities: this._communities.map(c => c.id),
+
+            followers: this._followers,
+            following: this._following,
 
             permissions: this._permissions,
             created: this._created.getTime(),
@@ -170,12 +182,8 @@ export default class User {
         return user;
 
     }
-
-    private static generate_id() {
-        let id: string;
-        do { id = Date.now().toString(); }
-        while (Tables.Users.has(id));
-        return id;
+    static generate_id() {
+        throw new Error("Method not implemented.");
     }
 
     /* ------------------------------------------------- */
@@ -210,6 +218,8 @@ export default class User {
     get pronouns() { return this._pronouns }
     get communities() { return this._communities }
     get wall() { return this._wall }
+    get followers() { return this._followers }
+    get following() { return this._following }
 
     set username(username: string) {
 

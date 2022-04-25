@@ -7,6 +7,8 @@ export default class User {
     private _display_name;
     private _email;
     private _communities;
+    private _followers;
+    private _following;
     private _permissions;
     private _created;
     private _mfa?;
@@ -30,6 +32,8 @@ export default class User {
         username: string;
         display_name: string;
         communities: string[];
+        followers: User[];
+        following: User[];
         permissions: {
             [community_id: string]: number;
         };
@@ -46,7 +50,7 @@ export default class User {
     to_token(): string;
     save(): void;
     static create(username: string, email: string, password: string): User;
-    private static generate_id;
+    static generate_id(): void;
     password_matches(password: string): boolean;
     email_matches(email: string): boolean;
     join_community(community: Community): void;
@@ -65,6 +69,8 @@ export default class User {
     get pronouns(): string[];
     get communities(): Community[];
     get wall(): Message[];
+    get followers(): User[];
+    get following(): User[];
     set username(username: string);
     set email(email: string);
     set password(password: string);

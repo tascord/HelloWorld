@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Button, Group, LoadingOverlay, Modal, Paper, Select, Text, TextInput } from "@mantine/core";
+import { ActionIcon, Box, Button, Group, LoadingOverlay, Modal, Paper, ScrollArea, Select, Text, TextInput } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { Link, LoaderFunction, useLoaderData } from "remix";
 import { Calendar, Plus, Users } from "tabler-icons-react";
@@ -7,7 +7,7 @@ import { ThemedText } from "~/root";
 import { api_request } from "~/utils/Server";
 import { getSession } from "~/utils/Session";
 import { Community, Message, User } from "~/utils/Types";
-import { Hint } from "./c.$id";
+import { Hint } from "./$id";
 import { User as UserIcon } from "tabler-icons-react";
 
 export const loader: LoaderFunction = ({ request }) => new Promise(async resolve => {
@@ -27,12 +27,13 @@ export function PostButton({ community, user, token }: { community?: Community, 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | undefined>(undefined);
 
-    const [fields, setFields] = useState<{ [key: string]: string }>({ community: community?.id || '0' });
+    const [fields, setFields] = useState<{ [key: string]: string }>({ community: community?.id || user.id });
 
     const [fetching, setFetching] = useState(false);
     const [communities, setCommunities] = useState<Community[]>([]);
 
     useEffect(() => {
+        console.log('Fields', fields)
         if (fetching) return;
         setFetching(true);
 
@@ -55,7 +56,7 @@ export function PostButton({ community, user, token }: { community?: Community, 
         api_request<Message>(`community/${fields['community']}/post`, 'put', fields, token)
             .then(message => {
                 // TODO: Remix redirect
-                window.location.pathname = fields['community'] === '0' ? `/u/${user.username}/${message.id}` : `/c/${fields['community']}/${message.id}`;
+                window.location.pathname = `${fields['community']}/${message.id}`;
             })
             .catch(setError)
             .finally(() => setLoading(false))
@@ -66,6 +67,7 @@ export function PostButton({ community, user, token }: { community?: Community, 
             position: 'fixed',
             bottom: '2rem',
             right: '2rem',
+            zIndex: 100,
         }}>
             <Modal
                 size='xl'
@@ -80,13 +82,13 @@ export function PostButton({ community, user, token }: { community?: Community, 
                         label="Community to post to"
                         placeholder="Pick one"
                         nothingFound="No options"
-                        onChange={(e: any) => setFields({ ...fields, community: e.value })}
+                        onChange={(e: any) => setFields({ ...fields, community: e })}
                         value={fields['community']}
                         data={communities.map(c => ({
                             value: c.id,
                             label: c.name,
                         })).concat(({
-                            value: '0',
+                            value: user.id,
                             label: 'Post to wall',
                         }))}
                     />
@@ -193,6 +195,7 @@ export default function () {
                             key={m.id}
                             withBorder
                             p="md"
+                            my="lg"
                             shadow="sm"
                             style={{ width: '100%' }}>
                             <Text
@@ -200,7 +203,7 @@ export default function () {
                                 weight={700}
                                 variant="gradient"
                                 component={Link}
-                                to={`/c/${m.community_id}/p/${m.id}`}
+                                to={`/${m.community_id}/post/${m.id}`}
                                 gradient={{ from: '#FCB0B3', to: '#7EB2DD', deg: 0 }}
                                 sx={{ fontSize: '1.5rem' }}>
                                 {m.title}
@@ -211,12 +214,12 @@ export default function () {
                                 <Hint
                                     icon={<Users />}
                                     text={communityCache[m.community_id]?.name ?? '...'}
-                                    link={`/c/${m.community_id}`}
+                                    link={m.community_id}
                                     color="grape" />
                                 <Hint
                                     icon={<UserIcon />}
                                     text={userCache[m.author_id]?.display_name ?? m.author_id}
-                                    link={`/u/${userCache[m.author_id]?.username ?? m.id}`}
+                                    link={'/' + userCache[m.author_id]?.username ?? m.id}
                                     color="teal" />
                                 <Hint
                                     icon={<Calendar />}
@@ -243,20 +246,22 @@ export default function () {
     return (
         <Box
             style={{
-                height: 'calc(100vh - 32px - 7.5rem - 2.5rem)',
+                height: '100%',
                 width: '100%',
                 display: 'flex',
+                flexDirection: 'column',
                 justifyContent: 'center'
             }}>
             <LoadingOverlay visible={loading} />
-            <Group
-                position="left"
-                direction="column"
+            <ScrollArea
                 style={{
-                    width: 'min(70vw, 45rem)'
+                    height: '100%',
+                    width: 'min(70vw, 45rem)',
+                    display: 'flex',
+                    flexDirection: 'column',
                 }}>
                 {!loading && <Posts />}
-            </Group>
+            </ScrollArea>
         </Box>
     )
 

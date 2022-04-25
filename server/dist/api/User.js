@@ -10,24 +10,26 @@ var Message_1 = __importDefault(require("./Message"));
 var Signer_1 = __importDefault(require("./Signer"));
 var User = /** @class */ (function () {
     function User(data) {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q;
         this.id = data.id;
         this._username = data.username;
         this._password = data.password;
-        this._display_name = data.display_name;
+        this._display_name = (_a = data.display_name) !== null && _a !== void 0 ? _a : data.username;
         this._email = data.email;
-        this._communities = ((_a = data.communities) !== null && _a !== void 0 ? _a : []).map(function (c) { return Community_1.default.from_id(c); });
-        this._permissions = (_b = data.permissions) !== null && _b !== void 0 ? _b : {};
-        this._created = new Date((_c = data.created) !== null && _c !== void 0 ? _c : Date.now());
-        this._mfa = (_d = data.mfa) !== null && _d !== void 0 ? _d : undefined;
-        this._email_verified = (_e = data.email_verified) !== null && _e !== void 0 ? _e : false;
-        this._messages = ((_f = data.messages) !== null && _f !== void 0 ? _f : []).map(function (m) { return Message_1.default.from_id(m); });
-        this._avatar = (_g = data.avatar) !== null && _g !== void 0 ? _g : 'default';
-        this._bio = (_h = data.bio) !== null && _h !== void 0 ? _h : '';
-        this._location = (_j = data.location) !== null && _j !== void 0 ? _j : '';
-        this._website = (_k = data.website) !== null && _k !== void 0 ? _k : '';
-        this._pronouns = (_l = data.pronouns) !== null && _l !== void 0 ? _l : [];
-        this._wall = ((_m = data.wall) !== null && _m !== void 0 ? _m : []).map(function (m) { return Message_1.default.from_id(m); });
+        this._communities = ((_b = data.communities) !== null && _b !== void 0 ? _b : []).map(function (c) { return Community_1.default.from_id(c); });
+        this._followers = ((_c = data.followers) !== null && _c !== void 0 ? _c : []).map(function (u) { return User.from_id(u); });
+        this._following = ((_d = data.followers) !== null && _d !== void 0 ? _d : []).map(function (u) { return User.from_id(u); });
+        this._permissions = (_e = data.permissions) !== null && _e !== void 0 ? _e : {};
+        this._created = new Date((_f = data.created) !== null && _f !== void 0 ? _f : Date.now());
+        this._mfa = (_g = data.mfa) !== null && _g !== void 0 ? _g : undefined;
+        this._email_verified = (_h = data.email_verified) !== null && _h !== void 0 ? _h : false;
+        this._messages = ((_j = data.messages) !== null && _j !== void 0 ? _j : []).map(function (m) { return Message_1.default.from_id(m); });
+        this._avatar = (_k = data.avatar) !== null && _k !== void 0 ? _k : 'default';
+        this._bio = (_l = data.bio) !== null && _l !== void 0 ? _l : '';
+        this._location = (_m = data.location) !== null && _m !== void 0 ? _m : '';
+        this._website = (_o = data.website) !== null && _o !== void 0 ? _o : '';
+        this._pronouns = (_p = data.pronouns) !== null && _p !== void 0 ? _p : [];
+        this._wall = ((_q = data.wall) !== null && _q !== void 0 ? _q : []).map(function (m) { return Message_1.default.from_id(m); });
         if (!this.id)
             throw new Error('User must have an ID');
         if (!this._username)
@@ -76,6 +78,8 @@ var User = /** @class */ (function () {
             username: this._username,
             display_name: this._display_name,
             communities: this._communities.map(function (c) { return c.id; }),
+            followers: this._followers,
+            following: this._following,
             permissions: this.permissions,
             created: this.created.getTime(),
             email_verified: this.email_verified,
@@ -104,6 +108,8 @@ var User = /** @class */ (function () {
             display_name: this._display_name,
             email: this._email,
             communities: this._communities.map(function (c) { return c.id; }),
+            followers: this._followers,
+            following: this._following,
             permissions: this._permissions,
             created: this._created.getTime(),
             mfa: this._mfa,
@@ -139,11 +145,7 @@ var User = /** @class */ (function () {
         return user;
     };
     User.generate_id = function () {
-        var id;
-        do {
-            id = Date.now().toString();
-        } while (Data_1.Tables.Users.has(id));
-        return id;
+        throw new Error("Method not implemented.");
     };
     /* ------------------------------------------------- */
     User.prototype.password_matches = function (password) {
@@ -274,6 +276,16 @@ var User = /** @class */ (function () {
             this._wall = wall;
             this.save();
         },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(User.prototype, "followers", {
+        get: function () { return this._followers; },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(User.prototype, "following", {
+        get: function () { return this._following; },
         enumerable: false,
         configurable: true
     });

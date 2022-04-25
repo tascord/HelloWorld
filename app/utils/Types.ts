@@ -15,6 +15,8 @@ export type User = {
     pronouns: string[];
     communities: string[];
     wall: string[];
+    followers: User[];
+    following: User[];
 }
 
 export type Community = {

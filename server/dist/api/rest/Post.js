@@ -14,7 +14,7 @@ exports.Object.put = function (user, data, _a) {
     return new Promise(function (resolve) {
         if (!user)
             return;
-        var community = id === '0' ? Community_1.default.for_user(user) : Community_1.default.from_id(id);
+        var community = Community_1.default.from_id(id);
         var message = Message_1.default.create(data.title, data.content, community, user);
         resolve(message.to_public());
     });

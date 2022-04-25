@@ -1,11 +1,11 @@
 import { Link, LoaderFunction, redirect, useLoaderData } from "remix";
-import { Box, Group, LoadingOverlay, Pagination, Paper, Text } from "@mantine/core";
+import { Box, Group, LoadingOverlay, Pagination, Paper, ScrollArea, Text } from "@mantine/core";
 import { api_request } from "~/utils/Server";
-import { Message, User } from "~/utils/Types";
+import { Community, Message, User } from "~/utils/Types";
 import { useEffect, useState } from "react";
 import { RichText } from "~/components/Editor";
 import { Calendar, User as UserIcon } from "tabler-icons-react";
-import { Hint } from "../c.$id";
+import { Hint } from "../$id";
 import { getSession, commitSession } from "~/utils/Session";
 
 export const loader: LoaderFunction = ({ request, params }) => new Promise(async resolve => {
@@ -15,8 +15,13 @@ export const loader: LoaderFunction = ({ request, params }) => new Promise(async
         return resolve(redirect('/'));
     }
 
-    const community = await api_request<Message[]>('community/' + params.id!, 'get', undefined, session.get('token'))
+    const community = await api_request<Community>('community/' + params.id!, 'get', undefined, session.get('token'))
         .catch(resolve)
+
+    if (!community) return;
+
+    const target = community.id === '0' ? await api_request<User>('user/' + params.id!, 'get', undefined, session.get('token'))
+        .catch(resolve) : undefined;
 
     const user = await api_request<Message[]>('me', 'get', undefined, session.get('token'))
         .catch(async () => {
@@ -37,7 +42,7 @@ export default function () {
 
     if (typeof useLoaderData() === 'string') return null;
 
-    const [community, user, token] = useLoaderData();
+    const [community, target, user, token] = useLoaderData<[Community, User | undefined, User, string]>();
     const [messageCache, setMessageCache] = useState<{ [page: number]: Message[] }>({});
     const [userCache, setUserCache] = useState<{ [id: string]: User }>({});
     const [messages, setMessages] = useState<Message[]>([]);
@@ -53,14 +58,15 @@ export default function () {
                             key={m.id}
                             withBorder
                             p="md"
+                            my="lg"
                             shadow="sm"
-                            style={{ width: '100%' }}>
+                            style={{ width: 'calc(100% - 1rem)' }}>
                             <Text
                                 color="grape"
                                 weight={700}
                                 variant="gradient"
                                 component={Link}
-                                to={`/c/${community.id}/p/${m.id}`}
+                                to={`/${community.id}/post/${m.id}`}
                                 gradient={{ from: '#FCB0B3', to: '#7EB2DD', deg: 0 }}
                                 sx={{ fontSize: '1.5rem' }}>
                                 {m.title}
@@ -71,7 +77,7 @@ export default function () {
                                 <Hint
                                     icon={<UserIcon />}
                                     text={userCache[m.author_id]?.display_name ?? m.author_id}
-                                    link={`/u/${userCache[m.author_id]?.username ?? m.id}`}
+                                    link={'/' + userCache[m.author_id]?.username ?? m.id}
                                     color="teal" />
                                 <Hint
                                     icon={<Calendar />}
@@ -103,7 +109,7 @@ export default function () {
             return;
         }
 
-        api_request<Message[]>('scroll/' + community.id, 'post', { page: page - 2 }, token)
+        api_request<Message[]>('scroll/' + target?.id ?? community.id, 'post', { page: page - 2 }, token)
             .then(res => {
                 setMessageCache({ ...messageCache, [page]: res });
                 setMessages(res);
@@ -147,14 +153,14 @@ export default function () {
                     justifyContent: 'center'
                 }}>
                 <LoadingOverlay visible={loading} />
-                <Group
-                    position="left"
-                    direction="column"
+                <ScrollArea
                     style={{
-                        width: 'min(70vw, 45rem)'
+                        width: 'min(70vw, 45rem)',
+                        display: 'flex',
+                        flexDirection: 'column',
                     }}>
                     {!loading && <Posts />}
-                </Group>
+                </ScrollArea>
             </Box>
             <Box
                 style={{

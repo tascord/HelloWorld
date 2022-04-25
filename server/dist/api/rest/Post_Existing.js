@@ -9,7 +9,7 @@ var Object_1 = __importDefault(require("../Object"));
 var Permissions_1 = require("../Permissions");
 exports.Object = new Object_1.default('community/:id/post/:post', ['patch', 'put', 'delete']);
 // Get a post
-exports.Object.get = function (_user, data, _a) {
+exports.Object.get = function (_user, _data, _a) {
     var id = _a.id, post = _a.post;
     return new Promise(function (resolve) {
         var community = Community_1.default.from_id(id);
