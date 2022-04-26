@@ -33,7 +33,7 @@ export function PostButton({ community, user, token }: { community?: Community, 
     const [communities, setCommunities] = useState<Community[]>([]);
 
     useEffect(() => {
-        console.log('Fields', fields)
+
         if (fetching) return;
         setFetching(true);
 
@@ -156,7 +156,7 @@ export default function () {
 
     function poll() {
         if (loading) return;
-        api_request<Message[]>('scroll/home', 'post', { page: page - 1 }, token)
+        api_request<Message[]>('scroll/home', 'post', { page: page }, token)
             .then(res => {
                 setMessageCache([...messageCache, ...res]);
                 res

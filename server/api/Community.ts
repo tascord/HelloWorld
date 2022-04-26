@@ -58,7 +58,7 @@ export default class Community {
             owner_id: user.id,
             created: user.created,
             users: [user.id],
-            messages: user.wall.map(m => m.id),
+            messages: user.wall.map(m => m.id).concat(user.messages.map(m => m.id)),
             audit_log: []
         })
     }

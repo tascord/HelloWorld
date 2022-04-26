@@ -56,7 +56,7 @@ var Community = /** @class */ (function () {
             owner_id: user.id,
             created: user.created,
             users: [user.id],
-            messages: user.wall.map(function (m) { return m.id; }),
+            messages: user.wall.map(function (m) { return m.id; }).concat(user.messages.map(function (m) { return m.id; })),
             audit_log: []
         });
     };

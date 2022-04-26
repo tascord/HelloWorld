@@ -102,7 +102,7 @@ const Layout = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
       }}>
 
         <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
-          <MantineProvider theme={{ colorScheme, fontFamily: 'GreyCliff CF, sans-serif' }}>
+          <MantineProvider theme={{ colorScheme, fontFamily: 'Rubik, sans-serif' }}>
             <NotificationsProvider>
               <SpotlightProvider
                 actions={[]}

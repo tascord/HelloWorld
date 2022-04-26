@@ -1,12 +1,13 @@
 import { Link, LoaderFunction, MetaFunction, Outlet, redirect, useLoaderData } from "remix";
-import { ActionIcon, Box, Group, MantineColor, Text } from "@mantine/core";
+import { ActionIcon, Box, Button, Group, MantineColor, Text } from "@mantine/core";
 import { api_request } from "~/utils/Server";
 import { commitSession, getSession } from "~/utils/Session";
-import { Community, Message, User } from "~/utils/Types";
+import { Community, User } from "~/utils/Types";
 import { ThemedText } from "~/root";
 import { PostButton } from ".";
-import { At, Globe, Users } from "tabler-icons-react";
+import { At, Globe, UserMinus, UserPlus, Users } from "tabler-icons-react";
 import { RichText } from "~/components/Editor";
+import { useState } from "react";
 
 export const loader: LoaderFunction = ({ request, params }) => new Promise(async resolve => {
 
@@ -107,9 +108,29 @@ export default function () {
     )
 
     const [community, target, user, token] = data;
+    const [following, setFollowing] = useState(false);
+    const [followingWork, setFollowingWork] = useState(false);
+
+    function toggle_follow() {
+        if (followingWork) return;
+        setFollowingWork(true);
+
+        api_request('follow/' + user.id, following ? 'delete' : 'put', {}, token)
+            .then(() => setFollowing(!following))
+            .catch(() => { })
+            .finally(() => {
+                setFollowingWork(false);
+            })
+
+    }
 
     return (
-        <>
+        <Box
+            style={{
+                maxHeight: 'calc(100vh - 32px)',
+                display: 'flex',
+                flexDirection: 'column'
+            }}>
             <PostButton user={user} community={community} token={token} />
             <Box
                 style={{ height: '7.5rem' }}>
@@ -133,11 +154,21 @@ export default function () {
                             <Hint color="blue" icon={<Users />} text={`${target.followers.length} Follower${target.followers.length === 1 ? '' : 's'}, ${target.following.length} Following`} />
                             <Hint color="green" icon={<Globe />} text={`Member of ${target.communities.length} ${target.communities.length === 1 ? 'community' : 'communities'}`} />
                         </Group>
-                        <RichText onChange={() => { }} value={target.bio} readOnly />
+                        <Group>
+                            <Button
+                                variant="light"
+                                loading={followingWork}
+                                color={following ? 'red' : 'grape'}
+                                leftIcon={following ? <UserMinus /> : <UserPlus />}
+                                onClick={() => toggle_follow()}>
+                                {following ? 'Unfollow' : 'Follow'}
+                            </Button>
+                        </Group>
+                        {target.bio.length > 0 && <RichText onChange={() => { }} value={target.bio} readOnly />}
                     </>
                 }
             </Box>
             <Outlet />
-        </>
+        </Box>
     )
 }

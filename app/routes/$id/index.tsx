@@ -4,7 +4,7 @@ import { api_request } from "~/utils/Server";
 import { Community, Message, User } from "~/utils/Types";
 import { useEffect, useState } from "react";
 import { RichText } from "~/components/Editor";
-import { Calendar, User as UserIcon } from "tabler-icons-react";
+import { Calendar, User as UserIcon, Users } from "tabler-icons-react";
 import { Hint } from "../$id";
 import { getSession, commitSession } from "~/utils/Session";
 
@@ -33,7 +33,7 @@ export const loader: LoaderFunction = ({ request, params }) => new Promise(async
             }));
         })
 
-    resolve([community, user, session.get('token')]);
+    resolve([community, target, user, session.get('token')]);
 
 
 })
@@ -74,6 +74,12 @@ export default function () {
                             <Group
                                 mt="-sm"
                                 direction="row">
+                                {m.community_id !== community.id && <Hint
+                                    icon={<Users />}
+                                    text={m.community_id}
+                                    link={'/' + m.community_id}
+                                    color="teal" />
+                                }
                                 <Hint
                                     icon={<UserIcon />}
                                     text={userCache[m.author_id]?.display_name ?? m.author_id}
@@ -109,28 +115,38 @@ export default function () {
             return;
         }
 
-        api_request<Message[]>('scroll/' + target?.id ?? community.id, 'post', { page: page - 2 }, token)
+        api_request<Message[]>('scroll/' + target?.id ?? community.id, 'post', { page: page - 1 }, token)
             .then(res => {
+                console.log('Polled:', res)
                 setMessageCache({ ...messageCache, [page]: res });
                 setMessages(res);
 
-                res
+                const un = res
                     .map(m => m.author_id)
                     .filter(a => !userCache[a])
-                    .filter((v, i, a) => a.indexOf(v) === i)
-                    .forEach((v, i, a) => {
-                        api_request<User>('user/' + v, 'get', undefined, token)
-                            .then(res => {
-                                setUserCache({ ...userCache, [v]: res });
-                            })
-                            .catch(() => { })
-                            .finally(() => {
-                                if (i === a.length - 1) setLoading(false);
-                            })
-                    })
+                    .filter((v, i, a) => a.indexOf(v) === i);
+
+                if (un.length === 0) {
+                    setLoading(false);
+                    return;
+                }
+
+                un.forEach((v, i, a) => {
+                    api_request<User>('user/' + v, 'get', undefined, token)
+                        .then(res => {
+                            setUserCache({ ...userCache, [v]: res });
+                        })
+                        .catch(() => { })
+                        .finally(() => {
+                            console.log(`Polled ${i + 1}/${a.length}`);
+                            if (i === a.length - 1) setLoading(false);
+                        })
+                })
+
 
             })
-            .catch(() => {
+            .catch((e) => {
+                console.log(`Error polling scroll feed\n${e}`);
                 // TODO: Alert user of error
                 setMessages([]);
                 setLoading(false);
@@ -145,23 +161,33 @@ export default function () {
 
     return (
         <>
-            <Box
+            <ScrollArea
+                type="always"
                 style={{
-                    height: 'calc(100vh - 32px - 7.5rem - 2.5rem)',
+                    flex: '1',
                     width: '100%',
                     display: 'flex',
-                    justifyContent: 'center'
+                    justifyContent: 'center',
                 }}>
                 <LoadingOverlay visible={loading} />
-                <ScrollArea
+                <Box
                     style={{
-                        width: 'min(70vw, 45rem)',
+                        
+                        width: '100%',
                         display: 'flex',
                         flexDirection: 'column',
+                        alignItems: 'center',
                     }}>
-                    {!loading && <Posts />}
-                </ScrollArea>
-            </Box>
+                    <Box
+                        style={{
+                            width: 'min(70vw, 45rem)',
+                            display: 'flex',
+                            flexDirection: 'column',
+                        }}>
+                        {!loading && <Posts />}
+                    </Box>
+                </Box>
+            </ScrollArea>
             <Box
                 style={{
                     width: '100%',
